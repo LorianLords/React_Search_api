@@ -1,0 +1,6 @@
+The utils folder contains reusable function snippets for
+performing quick tasks like text truncation or down casing.
+
+В папке utils содержатся фрагменты функций многократного использования
+ для выполнения быстрых задач, таких как усечение текста
+ или уменьшение регистра.
