@@ -1,11 +1,9 @@
 import React from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
-import cardImage from "../../assets/react.svg";
+
 import { CardProps } from "../../types/types";
-import {fetchData} from "../../services/apiService";
-import {Simulate} from "react-dom/test-utils";
-import error = Simulate.error;
+import { fetchData } from "../../services/apiService";
 
 /*
 const items: CardProps[] = [
@@ -19,87 +17,96 @@ const items: CardProps[] = [
 interface CardListState {
   data: CardProps[] | [];
   loading: boolean;
-  error: string| null;
-  search: string | null
+  error: string | null;
+  search: string | null;
 }
 
 interface CardListProps {
-  search: string | null
+  search: string | null;
 }
 class CardList extends React.Component<CardListProps, CardListState> {
-
   constructor(props: CardListProps) {
     super(props);
-   this.state = {
-     data: [],
-     loading: true,
-     error: null,
-     search: this.props.search
-   };
+    this.state = {
+      data: [],
+      loading: true,
+      error: null,
+      search: this.props.search,
+    };
+    this.errorHandle = this.errorHandle.bind(this);
   }
-
 
   componentDidMount() {
-    fetchData(this.state.search).then(
-        response => {
-
-          this.setState({
-            ...this.state,
-            data: response,
-            loading: false,
-          });
-          console.log(this.state)
-        }
-    ).catch(error => {
-      this.setState({
-        ...this.state,
-        error: error.message,
-        loading: false,
-        data: [],
+    fetchData(this.state.search)
+      .then((response) => {
+        this.setState({
+          ...this.state,
+          data: response,
+          loading: false,
+        });
+        console.log("Component did mount, state:", this.state);
       })
-    })
-  }
-
-  componentDidUpdate(prevProps: CardListProps) {
-    if (prevProps.search !== this.props.search) {
-      console.log('COMPONENT DID UPDATE')
-      fetchData(this.props.search).then(
-          response => {
-
-            this.setState({
-              ...this.state,
-              data: response,
-              loading: false,
-              search: this.props.search
-            });
-            console.log(this.state)
-          }
-      ).catch(error => {
+      .catch((error) => {
         this.setState({
           ...this.state,
           error: error.message,
           loading: false,
           data: [],
-        })
-      })
-    }
+        });
+        console.error("Error fetching data:", error);
+      });
   }
 
+  componentDidUpdate(prevProps: CardListProps) {
+    if (prevProps.search !== this.props.search) {
+      console.log("Component did update, new search:", this.props.search);
+      fetchData(this.props.search)
+        .then((response) => {
+          this.setState({
+            ...this.state,
+            data: response,
+            loading: false,
+            search: this.props.search,
+          });
+          console.log("Updated state after fetch:", this.state);
+        })
+        .catch((error) => {
+          this.setState({
+            ...this.state,
+            error: error.message,
+            loading: false,
+            data: [],
+          });
+          console.error("Error fetching data:", error);
+        });
+    }
+  }
+  errorHandle = () => {
+    console.log("Error button clicked");
+
+    this.setState({ ...this.state, error: "error" });
+  };
 
   render() {
     const { data, loading, error } = this.state;
 
-    if(loading) {
+    if (error) {
+      throw new Error("I crashed!");
+    }
+    if (loading) {
       return <div>Loading...</div>;
     }
 
-    if(error){
-      return <div>Error: {error}</div>
+    if (error) {
+      return <div>Error: {error}</div>;
     }
 
     return (
       <div className={styles.cardList}>
-        <p>{this.state.search}</p>
+        <div>
+          <button onClick={this.errorHandle}>Error button</button>
+        </div>
+
         {data.map((item) => (
           <Card
             key={item.id}
@@ -109,7 +116,6 @@ class CardList extends React.Component<CardListProps, CardListState> {
             image={item.image}
           />
         ))}
-
       </div>
     );
   }

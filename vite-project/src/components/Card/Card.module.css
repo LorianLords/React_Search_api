@@ -23,7 +23,7 @@
   object-fit: contain; /* Убедитесь, что изображение вписывается в заданные размеры */
 }
 
-.card h2{
+.card h2 {
   font-size: 1.2em;
   text-align: center;
   overflow: hidden; /* Скрывает переполнение */

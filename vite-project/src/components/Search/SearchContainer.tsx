@@ -1,6 +1,5 @@
 import React from "react";
 import styles from "./Search.module.css";
-import {fetchData} from "../../services/apiService";
 
 interface searchInputState {
   inputText: string;
@@ -8,10 +7,13 @@ interface searchInputState {
 
 interface SearchContainerProps {
   onSearch: (searchItem: string) => void;
-  search: string
+  search: string;
 }
 
-class SearchContainer extends React.Component<SearchContainerProps, searchInputState> {
+class SearchContainer extends React.Component<
+  SearchContainerProps,
+  searchInputState
+> {
   constructor(props: SearchContainerProps) {
     super(props);
     this.state = {
@@ -21,15 +23,13 @@ class SearchContainer extends React.Component<SearchContainerProps, searchInputS
 
   handleChange = (e) => {
     this.setState({ inputText: e.target.value });
-
   };
 
-
-handleSubmit = (e) => {
-  e.preventDefault();
-  console.log(this.state.inputText)
-  this.props.onSearch(this.state.inputText)
-}
+  handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(this.state.inputText);
+    this.props.onSearch(this.state.inputText.trim());
+  };
   render() {
     return (
       <header className={styles.container}>
