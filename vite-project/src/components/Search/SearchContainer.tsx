@@ -1,4 +1,4 @@
-import React from "react";
+import React, {FC, useState} from "react";
 import styles from "./Search.module.css";
 
 interface searchInputState {
@@ -6,45 +6,46 @@ interface searchInputState {
 }
 
 interface SearchContainerProps {
-  onSearch: (searchItem: string) => void;
+  //onSearch: (searchItem: string) => void;
   search: string;
+setSearch:  React.Dispatch<React.SetStateAction<string | null>>;
 }
 
-class SearchContainer extends React.Component<
-  SearchContainerProps,
-  searchInputState
-> {
-  constructor(props: SearchContainerProps) {
-    super(props);
-    this.state = {
-      inputText: this.props.search,
-    };
-  }
+const SearchContainer: FC = ({search, setSearch}: SearchContainerProps) => {
 
-  handleChange = (e) => {
-    this.setState({ inputText: e.target.value });
+    const [inputText, setInputText] = useState<string>(search)
+
+  const handleSearch = (inputText) => {
+    console.log(search)
+    setSearch(inputText);
+    console.log(search + ' 2')
+    localStorage.setItem("searchText", inputText);
   };
 
-  handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state.inputText);
-    this.props.onSearch(this.state.inputText.trim());
+    console.log(inputText);
+    handleSearch(inputText.trim());
   };
-  render() {
+
     return (
       <header className={styles.container}>
         <h1>Search Container</h1>
         <div>
           <input
             type="text"
-            value={this.state.inputText}
-            onChange={this.handleChange}
+            value={inputText}
+            onChange={handleChange}
           />
-          <button onClick={this.handleSubmit}>Search</button>
+          <button onClick={handleSubmit}>Search</button>
         </div>
       </header>
     );
-  }
+
 }
 
 export default SearchContainer;

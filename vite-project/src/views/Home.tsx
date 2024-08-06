@@ -1,40 +1,28 @@
-import React from "react";
+import React, {FC, useState} from "react";
 import SearchContainer from "../components/Search/SearchContainer";
 import CardList from "../components/CardList/CardList";
 import ErrorBoundary from "../services/ErrorBoundary";
+import {constructor} from "@typescript-eslint/eslint-plugin";
 
-interface HomeInputState {
-  search: string;
-}
+const Home: FC = () =>{
 
-class Home extends React.Component<object, HomeInputState> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      search: localStorage.getItem("searchText") || "",
-    };
-  }
+    const [search, setSearch] = useState(localStorage.getItem("searchText") || "")
 
-  handleSearch = (inputText) => {
-    this.setState({ search: inputText });
-    localStorage.setItem("searchText", inputText);
-  };
-
-  render() {
     return (
-      <div>
-        <SearchContainer
-          search={this.state.search}
-          onSearch={this.handleSearch}
-        />
-        <hr />
+        <div>
+            <SearchContainer
+                search={search}
+                setSearch={setSearch}
+            />
+            <hr />
 
-        <ErrorBoundary>
-          <CardList search={this.state.search} />
-        </ErrorBoundary>
-      </div>
+            <ErrorBoundary>
+                <CardList search={search}  setSearch={setSearch}/>
+            </ErrorBoundary>
+        </div>
     );
   }
-}
+
+
 
 export default Home;
