@@ -1,23 +1,22 @@
 .navBar {
-    background-color: darkcyan;
-    padding: 0.5rem;
+  background-color: darkcyan;
+  padding: 0.5rem;
 }
 
-.navBar ul{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-
+.navBar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
 }
-.navBar li{
-    margin-right: 3rem;
+.navBar li {
+  margin-right: 3rem;
 }
 
-a{
+a {
   color: white;
-    text-decoration: none;
+  text-decoration: none;
 }
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }

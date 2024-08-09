@@ -7,6 +7,7 @@ export type CardProps = {
   image: string | null;
 };
 
-export type ResponseType = {
-  res;
-};
+export interface Links {
+  name: string;
+  url: string;
+}

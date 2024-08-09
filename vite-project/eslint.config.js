@@ -49,6 +49,7 @@ export default tseslint.config(
       "comma-dangle": ["error", "only-multiline"],
       "react/prop-types": "off",
       "react/display-name": "off",
+      "no-unused-vars": "off",
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/no-non-null-assertion": "off",
@@ -57,6 +58,7 @@ export default tseslint.config(
       "@typescript-eslint/no-var-requires": "off",
       "react/jsx-uses-react": "off",
       "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/no-unused-vars": ["warn"],
     },
   },
 );
