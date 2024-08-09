@@ -11,18 +11,17 @@ const api = axios.create({
 });
 
 export const fetchData = async (searchItem: string | null) => {
-  console.log(searchItem);
+  console.log("API: ", typeof searchItem);
   try {
-    const response = searchItem
-      ? await fetchSearchData(searchItem)
-      : await api.get("/artworks", {
-          params: {
-            fields: "id,title,artist_display,date_display,image_id",
-            limit: 35,
-            // "pagination": {
-          },
-          /* params:  searchText && {search: searchText}*/
-        });
+    const url = searchItem ? "/artworks/search" : "/artworks";
+    const response = await api.get(url, {
+      params: {
+        q: searchItem,
+        fields: "id,title,artist_display,date_display,image_id",
+        limit: 35,
+        // "pagination": {
+      },
+    });
 
     let data = response.data.data;
     data = removeDuplicates(data);
@@ -50,16 +49,4 @@ export const fetchImg = async (data: CardProps[]) => {
       }
     }),
   );
-};
-
-export const fetchSearchData = async (searchItem: string) => {
-  const response = await api.get("/artworks/search", {
-    params: {
-      q: searchItem,
-      fields: "id,title,artist_display,date_display,image_id",
-      limit: 35,
-      // "pagination": {
-    },
-  });
-  return response;
 };
