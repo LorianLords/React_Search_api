@@ -17,8 +17,11 @@ const items: CardProps[] = [
 interface CardListProps {
   search: string | null;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  currentPage: number;
+  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
+
 }
-const CardList = ({ search }: CardListProps) => {
+const CardList = ({ search, currentPage,  setTotalPages }: CardListProps) => {
   const [data, setData] = useState<CardProps[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,11 +30,11 @@ const CardList = ({ search }: CardListProps) => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
     const signal = controller.signal;
-
+    setLoading(true);
     // Действие при монтировании компоненты
     console.log("Компонента смонтирована");
 
-    fetchData(search)
+    fetchData(search, currentPage, setTotalPages)
       .then((response) => {
         setData(response);
         setLoading(false);
@@ -46,7 +49,7 @@ const CardList = ({ search }: CardListProps) => {
       console.log("Компонента размонтирована");
       controller.abort(); // Отменяем запрос
     };
-  }, [search]);
+  }, [search, currentPage]);
 
   const errorHandle = () => {
     console.log("Error button clicked");
@@ -59,13 +62,17 @@ const CardList = ({ search }: CardListProps) => {
   if (loading) {
     return <div>Loading...</div>;
   }
+  if (data.length === 0) {
+    return (
+      <div className="about">
+        <h3>Sorry. There are no such pictures </h3>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.cardList}>
-      <div>
-        <button onClick={errorHandle}>Error button</button>
-      </div>
-
+        <button className={styles.errButton} onClick={errorHandle}>Error button</button>
       {data.map((item) => (
         <Card
           key={item.id}

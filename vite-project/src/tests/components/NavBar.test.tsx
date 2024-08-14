@@ -3,6 +3,7 @@ import { render, screen, cleanup, fireEvent } from "@testing-library/react";
 import NavBar from "../../components/NavBar/NavBar.tsx";
 import { expect } from "vitest";
 import { links } from "../../types/Const.ts";
+import { MemoryRouter } from "react-router-dom";
 
 vi.mock("../../types/Const.ts", () => ({
   links: [
@@ -13,12 +14,17 @@ vi.mock("../../types/Const.ts", () => ({
 
 describe("NavBar", () => {
   it("should be show links", () => {
-    render(<NavBar />);
+    render(
+      <MemoryRouter>
+        <NavBar />
+      </MemoryRouter>,
+    );
 
+    screen.debug();
     links.forEach((link) => {
       const item = screen.getByText(link.name);
       expect(item).toBeInTheDocument();
-      expect(item).toHaveAttribute('to')
+      expect(item).toHaveAttribute("href", link.url);
     });
   });
 });
