@@ -6,6 +6,7 @@ import "./index.css";
 import Home from "./views/Home";
 import ErrorPage from "./views/ErrorPage";
 import About from "./views/About";
+import CardList from "./components/CardList/CardList.tsx";
 
 const router = createBrowserRouter([
   {

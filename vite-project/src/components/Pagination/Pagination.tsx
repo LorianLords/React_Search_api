@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 
 interface PaginationProps {
   currentPage: number;
@@ -11,6 +12,16 @@ const Pagination = ({
   totalPages,
   setCurrentPage,
 }: PaginationProps) => {
+
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    searchParams.set("page", currentPage.toString());
+    setSearchParams(searchParams);
+      console.log("useEff pagination")
+  }, [currentPage, searchParams, setSearchParams]);
+
   const handlePrevious = () => {
     setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
   };

@@ -1,20 +1,33 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import SearchContainer from "../components/Search/SearchContainer";
 import CardList from "../components/CardList/CardList";
 import ErrorBoundary from "../services/ErrorBoundary";
 import Pagination from "../components/Pagination/Pagination.tsx";
+import { useSearchParams } from "react-router-dom";
 
 const Home: FC = () => {
+  const [searchParams] = useSearchParams();
+  const initialPage = parseInt(searchParams.get("page") || "1", 10);
+
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [search, setSearch] = useState(
-    localStorage.getItem("searchText") || "",
+    searchParams.get("search") || localStorage.getItem("searchText") || "",
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+
+  useEffect(() => {
+    setCurrentPage(initialPage);
+  }, [initialPage]);
 
   return (
     <div>
-      <SearchContainer search={search} setSearch={setSearch} />
+      <SearchContainer
+        search={search}
+        setSearch={setSearch}
+        setCurrentPage={setCurrentPage}
+      />
       <hr />
 
       <ErrorBoundary>

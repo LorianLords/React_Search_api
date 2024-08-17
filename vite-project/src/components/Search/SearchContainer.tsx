@@ -1,22 +1,25 @@
 import React, { FC, useState } from "react";
 import styles from "./Search.module.css";
+import { useSearchParams } from "react-router-dom";
 
 interface SearchContainerProps {
   //onSearch: (searchItem: string) => void;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const SearchContainer: FC<SearchContainerProps> = ({
   search,
   setSearch,
+  setCurrentPage,
 }: SearchContainerProps) => {
+
   const [inputText, setInputText] = useState<string>(search);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSearch = (inputText: string) => {
-    console.log(search);
     setSearch(inputText);
-    console.log(search + " 2");
     localStorage.setItem("searchText", inputText);
   };
 
@@ -26,7 +29,15 @@ const SearchContainer: FC<SearchContainerProps> = ({
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(inputText);
+
+    setCurrentPage(1);
+    if (inputText.trim() === "") {
+      searchParams.delete("search");
+    } else {
+      searchParams.set("search", inputText);
+    }
+    setSearchParams(searchParams);
+
     handleSearch(inputText.trim());
   };
 
