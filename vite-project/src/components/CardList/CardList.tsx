@@ -5,43 +5,41 @@ import styles from "./CardList.module.css";
 import { CardProps } from "../../types/types";
 import { fetchData } from "../../services/apiService";
 
-/*
-const items: CardProps[] = [
-  /!*{ cardName: "Pepe", description: "you know what it is", img: cardImage },
-  { cardName: "Lanfan", description: "you know what it is", img: cardImage },
-  { cardName: "Peter", description: "you know what it is", img: cardImage },
-  { cardName: "Goshua", description: "you know what it is", img: cardImage },
-  { cardName: "Goshua", description: "you know what it is", img: cardImage },*!/
-];
-*/
 interface CardListProps {
   search: string | null;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   currentPage: number;
   setTotalPages: React.Dispatch<React.SetStateAction<number>>;
-
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  isLoading: boolean;
 }
-const CardList = ({ search, currentPage,  setTotalPages }: CardListProps) => {
+const CardList = ({
+  search,
+  currentPage,
+  setTotalPages,
+  setIsLoading,
+  isLoading,
+}: CardListProps) => {
   const [data, setData] = useState<CardProps[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
     const signal = controller.signal;
-    setLoading(true);
+    setIsLoading(true);
     // Действие при монтировании компоненты
     console.log("Компонента смонтирована");
 
     fetchData(search, currentPage, setTotalPages)
       .then((response) => {
         setData(response);
-        setLoading(false);
+        setIsLoading(false);
       })
       .catch((error) => {
         setError(error.message);
-        setLoading(false);
+        setIsLoading(false);
         setData([]);
       });
 
@@ -59,20 +57,37 @@ const CardList = ({ search, currentPage,  setTotalPages }: CardListProps) => {
   if (error) {
     throw new Error("I crashed!");
   }
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-  if (data.length === 0) {
+  if (isLoading) {
     return (
-      <div className="about">
-        <h3>Sorry. There are no such pictures </h3>
+      <div
+        style={{
+          display: "flex ",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+          margin: "150px",
+        }}
+      >
+        Loading...
       </div>
     );
   }
 
+  setTimeout(() => {
+    if (data.length === 0) {
+      return (
+        <div className="about">
+          <h3>Sorry. There are no such pictures </h3>
+        </div>
+      );
+    }
+  }, 10000);
+
   return (
     <div className={styles.cardList}>
-        <button className={styles.errButton} onClick={errorHandle}>Error button</button>
+      <button className={styles.errButton} onClick={errorHandle}>
+        Error button
+      </button>
       {data.map((item) => (
         <Card
           key={item.id}

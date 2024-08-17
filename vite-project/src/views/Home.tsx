@@ -4,6 +4,7 @@ import CardList from "../components/CardList/CardList";
 import ErrorBoundary from "../services/ErrorBoundary";
 import Pagination from "../components/Pagination/Pagination.tsx";
 import { useSearchParams } from "react-router-dom";
+import CardDetails from "../components/CardDetails/CardDetails.tsx";
 
 const Home: FC = () => {
   const [searchParams] = useSearchParams();
@@ -12,10 +13,12 @@ const Home: FC = () => {
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
 
+  const [isLoading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState(
     searchParams.get("search") || localStorage.getItem("searchText") || "",
   );
 
+  const [selectedCard, setSelectedCard] = useState<number>(); // Выбранная карточка
 
   useEffect(() => {
     setCurrentPage(initialPage);
@@ -29,7 +32,6 @@ const Home: FC = () => {
         setCurrentPage={setCurrentPage}
       />
       <hr />
-
       <ErrorBoundary>
         <div
           style={{
@@ -44,12 +46,17 @@ const Home: FC = () => {
             setSearch={setSearch}
             currentPage={currentPage}
             setTotalPages={setTotalPages}
+            setIsLoading={setLoading}
+            isLoading={isLoading}
           />
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            totalPages={totalPages}
-          />
+          {selectedCard && <CardDetails card={selectedCard} />}
+          {!isLoading && (
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+            />
+          )}
         </div>
       </ErrorBoundary>
     </div>
