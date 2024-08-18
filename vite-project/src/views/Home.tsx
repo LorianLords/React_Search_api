@@ -3,11 +3,19 @@ import SearchContainer from "../components/Search/SearchContainer";
 import CardList from "../components/CardList/CardList";
 import ErrorBoundary from "../services/ErrorBoundary";
 import Pagination from "../components/Pagination/Pagination.tsx";
-import { useSearchParams } from "react-router-dom";
-import CardDetails from "../components/CardDetails/CardDetails.tsx";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+import styles from "./Home.module.css";
 
 const Home: FC = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [isDetailsOpen, setDetailsOpen] = useState(false);
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
 
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -18,11 +26,27 @@ const Home: FC = () => {
     searchParams.get("search") || localStorage.getItem("searchText") || "",
   );
 
-  const [selectedCard, setSelectedCard] = useState<number>(); // Выбранная карточка
-
   useEffect(() => {
     setCurrentPage(initialPage);
-  }, [initialPage]);
+    if (location.pathname.includes("card")) {
+      setDetailsOpen(true);
+    } else {
+      setDetailsOpen(false);
+    }
+  }, [initialPage, location]);
+
+  const handleSideMenu = () => {
+    document.documentElement.style.setProperty("--panel-position", "-300px");
+
+    setTimeout(() => {
+      if (isDetailsOpen) {
+        navigate("/home");
+      }
+      searchParams.set("page", initialPage.toString());
+      setSearchParams(searchParams);
+    }, 1000);
+
+  };
 
   return (
     <div>
@@ -34,12 +58,8 @@ const Home: FC = () => {
       <hr />
       <ErrorBoundary>
         <div
-          style={{
-            display: "flex ",
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
+          className={`${styles.content} ${isDetailsOpen && styles.contentOpen}`}
+          onClick={handleSideMenu}
         >
           <CardList
             search={search}
@@ -49,7 +69,7 @@ const Home: FC = () => {
             setIsLoading={setLoading}
             isLoading={isLoading}
           />
-          {selectedCard && <CardDetails card={selectedCard} />}
+          <Outlet />
           {!isLoading && (
             <Pagination
               currentPage={currentPage}

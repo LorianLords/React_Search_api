@@ -1,0 +1,40 @@
+:root{
+    --panel-position: -300px
+}
+
+.content {
+    flex: 1; /* Основное содержимое занимает оставшееся пространство */
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: margin-right 0.9s ease; /* Плавный переход при открытии/закрытии меню */
+}
+
+
+
+.sideDetails{
+
+    width: 300px;
+    background-color: white;
+    color: #004444;
+    position: fixed;
+    top: 0;
+    right: var(--panel-position);
+    height: 100%;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+    transition: right 0.9s ease;
+    z-index: 1000;
+    opacity: 0;
+}
+
+
+.sideDetails.open {
+    opacity: 1;
+    --panel-position: 0;
+}
+
+.contentOpen{
+    margin-right: 300px;
+}

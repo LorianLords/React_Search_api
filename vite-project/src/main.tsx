@@ -8,6 +8,7 @@ import ErrorPage from "./views/ErrorPage";
 import About from "./views/About";
 import CardList from "./components/CardList/CardList.tsx";
 import CardDetails from "./components/CardDetails/CardDetails.tsx";
+import card from "./components/Card/Card.tsx";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,12 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+        children: [
+          {
+            path: "card/:id",
+            element: <CardDetails />,
+          },
+        ],
       },
       {
         path: "about",

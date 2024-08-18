@@ -1,12 +1,18 @@
-import React from "react";
-import styles from "./CardDetails.module.css";
+import React, { useEffect } from "react";
+import styles from "../../views/Home.module.css";
+import { useParams } from "react-router-dom";
 
-type CardDetailsProps = {
-  card: number;
-};
-const cardDetails = ({ card }: CardDetailsProps) => {
+const cardDetails: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const card = id;
+  const [isVisible, setVisible] = React.useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+  }, []);
+
   return (
-    <div className={styles.container}>
+    <div className={`${styles.sideDetails} ${isVisible && styles.open}`}>
       <p>Details ${card}</p>
     </div>
   );

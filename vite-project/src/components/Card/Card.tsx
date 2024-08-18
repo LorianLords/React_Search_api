@@ -3,11 +3,13 @@ import styles from "./Card.module.css";
 import { CardProps } from "../../types/types";
 import defaultImg from "../../assets/react.svg";
 import placeholder from "../../assets/placeholder.jpg";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Card: FC<CardProps> = (props: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page");
   const handleImageLoad = () => {
     setIsLoaded(true);
   };
@@ -18,7 +20,11 @@ const Card: FC<CardProps> = (props: CardProps) => {
 
   const handleCardDetails = () => {
     navigate(`./card/${props.id}`);
+    searchParams.set("page", page?.toString() || "1");
+    setSearchParams(searchParams);
+
   };
+
 
   return (
     <div className={styles.card} onClick={handleCardDetails}>
