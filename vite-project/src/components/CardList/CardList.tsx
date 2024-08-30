@@ -4,6 +4,7 @@ import styles from "./CardList.module.css";
 
 import { CardProps } from "../../types/types";
 import { fetchData } from "../../services/apiService";
+import Loading from "../Loading.tsx";
 
 interface CardListProps {
   search: string | null;
@@ -58,19 +59,7 @@ const CardList = ({
     throw new Error("I crashed!");
   }
   if (isLoading) {
-    return (
-      <div
-        style={{
-          display: "flex ",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          margin: "150px",
-        }}
-      >
-        Loading...
-      </div>
-    );
+    return <Loading />;
   }
 
   setTimeout(() => {

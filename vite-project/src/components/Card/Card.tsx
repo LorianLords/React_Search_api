@@ -18,11 +18,11 @@ const Card: FC<CardProps> = (props: CardProps) => {
     setIsLoaded(false);
   };
 
-  const handleCardDetails = () => {
+  const handleCardDetails = (e: React.MouseEvent<HTMLDivElement>) => {
     navigate(`./card/${props.id}`);
     searchParams.set("page", page?.toString() || "1");
     setSearchParams(searchParams);
-
+    e.stopPropagation();
   };
 
 

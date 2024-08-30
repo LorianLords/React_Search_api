@@ -1,5 +1,5 @@
 :root{
-    --panel-position: -300px
+    --panel-position: -450px
 }
 
 .content {
@@ -16,7 +16,7 @@
 
 .sideDetails{
 
-    width: 300px;
+    width: 450px;
     background-color: white;
     color: #004444;
     position: fixed;
@@ -36,5 +36,5 @@
 }
 
 .contentOpen{
-    margin-right: 300px;
+    margin-right: 450px;
 }

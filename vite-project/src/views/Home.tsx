@@ -17,7 +17,6 @@ const Home: FC = () => {
   const location = useLocation();
   const [isDetailsOpen, setDetailsOpen] = useState(false);
   const initialPage = parseInt(searchParams.get("page") || "1", 10);
-
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -27,27 +26,20 @@ const Home: FC = () => {
   );
 
   useEffect(() => {
-    console.log("setInit")
     //setCurrentPage(initialPage);
     if (location.pathname.includes("card")) {
       setDetailsOpen(true);
     } else {
       setDetailsOpen(false);
     }
-  }, [initialPage, location]);
+  }, [initialPage, location ]);
 
   const handleSideMenu = () => {
-    document.documentElement.style.setProperty("--panel-position", "-300px");
-
-    setTimeout(() => {
-      if (isDetailsOpen) {
-        navigate("/home");
-      }
-      searchParams.set("page", currentPage.toString());
-      setSearchParams(searchParams);
-      console.log("setCur")
-    }, 1000);
-
+    if (isDetailsOpen) {
+      navigate("/home");
+    }
+    searchParams.set("page", currentPage.toString());
+    setSearchParams(searchParams);
   };
 
   return (
@@ -60,6 +52,7 @@ const Home: FC = () => {
       <hr />
       <ErrorBoundary>
         <div
+          id={"content-container"}
           className={`${styles.content} ${isDetailsOpen && styles.contentOpen}`}
           onClick={handleSideMenu}
         >
