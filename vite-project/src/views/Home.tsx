@@ -27,7 +27,8 @@ const Home: FC = () => {
   );
 
   useEffect(() => {
-    setCurrentPage(initialPage);
+    console.log("setInit")
+    //setCurrentPage(initialPage);
     if (location.pathname.includes("card")) {
       setDetailsOpen(true);
     } else {
@@ -42,8 +43,9 @@ const Home: FC = () => {
       if (isDetailsOpen) {
         navigate("/home");
       }
-      searchParams.set("page", initialPage.toString());
+      searchParams.set("page", currentPage.toString());
       setSearchParams(searchParams);
+      console.log("setCur")
     }, 1000);
 
   };
