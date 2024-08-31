@@ -6,10 +6,9 @@ import "./index.css";
 import Home from "./views/Home";
 import ErrorPage from "./views/ErrorPage";
 import About from "./views/About";
-import CardList from "./components/CardList/CardList.tsx";
 import CardDetails from "./components/CardDetails/CardDetails.tsx";
-import card from "./components/Card/Card.tsx";
-
+import { store } from "./state/store.ts";
+import { Provider } from "react-redux";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,6 +35,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 );

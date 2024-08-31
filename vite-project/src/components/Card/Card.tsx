@@ -7,7 +7,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Card: FC<CardProps> = (props: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page");
   const handleImageLoad = () => {
@@ -24,7 +24,6 @@ const Card: FC<CardProps> = (props: CardProps) => {
     setSearchParams(searchParams);
     e.stopPropagation();
   };
-
 
   return (
     <div className={styles.card} onClick={handleCardDetails}>

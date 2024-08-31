@@ -1,5 +1,5 @@
 import axios from "axios";
-import {CardDetailProps, CardProps} from "../types/types";
+import { CardDetailProps, CardProps } from "../types/types";
 import removeDuplicates from "../utils/RemoveDuplicates";
 import React from "react";
 
@@ -14,28 +14,21 @@ const api = axios.create({
 export const fetchData = async (
   searchItem: string | null,
   currentPage: number,
-  setTotalPages: React.Dispatch<React.SetStateAction<number>>,
+  //setTotalPages: React.Dispatch<React.SetStateAction<number>>,
 ) => {
-  console.log("API: ", typeof searchItem);
-  try {
-    const url = searchItem ? "/artworks/search" : "/artworks";
-    const response = await api.get(url, {
-      params: {
-        q: searchItem,
-        fields: "id,title,artist_display,date_display,image_id,pagination",
-        limit: 10,
-        page: currentPage || 1,
-      },
-    });
-    setTotalPages(response.data.pagination.total_pages || 1);
-    let data = response.data.data;
-    console.log(data);
-    data = removeDuplicates(data);
-    return (await fetchImg(data)) as CardProps[];
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-    throw error;
-  }
+  const url = searchItem ? "/artworks/search" : "/artworks";
+  const response = await api.get(url, {
+    params: {
+      q: searchItem,
+      fields: "id,title,artist_display,date_display,image_id,pagination",
+      limit: 10,
+      page: currentPage || 1,
+    },
+  });
+ // setTotalPages(response.data.pagination.total_pages || 1);
+  const data = removeDuplicates(response.data.data);
+  console.log(data);
+  return (await fetchImg(data)) as CardProps[];
 };
 
 export const fetchImg = async (data: CardProps[]) => {
@@ -58,7 +51,6 @@ export const fetchImg = async (data: CardProps[]) => {
 };
 
 export const fetchCardDetails = async (id?: string) => {
-
   try {
     const url = API_URL + "/artworks/" + id;
     const response = await api.get(url, {

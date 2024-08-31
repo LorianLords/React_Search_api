@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
-
-import { CardProps } from "../../types/types";
-import { fetchData } from "../../services/apiService";
 import Loading from "../Loading.tsx";
+import {
+  fetchCardList,
+  setError,
+  setLoading,
+} from "../../state/CardList/CardsSlice.ts";
+import { AppDispatch, RootState } from "../../state/store.ts";
+import { useAppSelector, useAppDispatch } from "../../hooks/hooks.ts";
+
+import { CardProps } from "../../types/types.ts";
 
 interface CardListProps {
   search: string | null;
@@ -14,35 +20,22 @@ interface CardListProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   isLoading: boolean;
 }
-const CardList = ({
-  search,
-  currentPage,
-  setTotalPages,
-  setIsLoading,
-  isLoading,
-}: CardListProps) => {
-  const [data, setData] = useState<CardProps[]>([]);
 
-  const [error, setError] = useState<string | null>(null);
+const CardList = ({ search, currentPage }: CardListProps) => {
+  const dispatch = useAppDispatch();
+  const { cardList, loading, error } = useAppSelector(
+    (state: RootState) => state.cards,
+  );
 
   useEffect(() => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
     const signal = controller.signal;
-    setIsLoading(true);
     // Действие при монтировании компоненты
     console.log("Компонента смонтирована");
 
-    fetchData(search, currentPage, setTotalPages)
-      .then((response) => {
-        setData(response);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setError(error.message);
-        setIsLoading(false);
-        setData([]);
-      });
+    dispatch(setLoading(true));
+    dispatch(fetchCardList({ search, currentPage }));
 
     return () => {
       console.log("Компонента размонтирована");
@@ -52,18 +45,17 @@ const CardList = ({
 
   const errorHandle = () => {
     console.log("Error button clicked");
-    setError("error");
+    dispatch(setError("I crashed!"));
   };
 
   if (error) {
-    throw new Error("I crashed!");
+    throw new Error(error);
   }
-  if (isLoading) {
+  if (loading) {
     return <Loading />;
   }
-
   setTimeout(() => {
-    if (data.length === 0) {
+    if (cardList.length === 0) {
       return (
         <div className="about">
           <h3>Sorry. There are no such pictures </h3>
@@ -77,7 +69,7 @@ const CardList = ({
       <button className={styles.errButton} onClick={errorHandle}>
         Error button
       </button>
-      {data.map((item) => (
+      {cardList.map((item: CardProps) => (
         <Card
           key={item.id}
           id={item.id}
