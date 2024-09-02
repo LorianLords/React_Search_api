@@ -23,17 +23,13 @@ const Home: FC = () => {
   const { currentPage } = useAppSelector((state) => state.pagination);
   const { loading } = useAppSelector((state) => state.cards);
 
-  const [search, setSearch] = useState(
-    searchParams.get("search") || localStorage.getItem("searchText") || "",
-  );
-
   useEffect(() => {
     if (location.pathname.includes("card")) {
       setDetailsOpen(true);
     } else {
       setDetailsOpen(false);
     }
-  }, [ location ]);
+  }, [location]);
 
   const handleSideMenu = () => {
     if (isDetailsOpen) {
@@ -45,11 +41,7 @@ const Home: FC = () => {
 
   return (
     <div>
-      <SearchContainer
-        search={search}
-        setSearch={setSearch}
-      //  setCurrentPage={setCurrentPage}
-      />
+      <SearchContainer />
       <hr />
       <ErrorBoundary>
         <div
@@ -57,15 +49,9 @@ const Home: FC = () => {
           className={`${styles.content} ${isDetailsOpen && styles.contentOpen}`}
           onClick={handleSideMenu}
         >
-          <CardList
-            search={search}
-            setSearch={setSearch}
-            currentPage={currentPage}
-          />
+          <CardList />
           <Outlet />
-          {!loading && (
-            <Pagination/>
-          )}
+          {!loading && <Pagination />}
         </div>
       </ErrorBoundary>
     </div>

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardProps } from "../../types/types.ts";
 import { fetchData } from "../../services/apiService.ts";
 import { Simulate } from "react-dom/test-utils";
-import { AppDispatch, RootState } from "../store.ts";
+import { AppDispatch, RootState, store } from "../store.ts";
 
 export interface CardsState {
   cardList: CardProps[];
@@ -16,8 +16,8 @@ const initialState: CardsState = {
   error: null,
 };
 
-export interface FetchProps {
-  search: string | null;
+interface FetchProps {
+  searchText: string | null;
   currentPage: number;
 }
 
@@ -27,14 +27,9 @@ export const fetchCardList = createAsyncThunk<
   { dispatch: AppDispatch; state: RootState }
 >(
   "cards/fetchCardList",
-  async ({ search, currentPage }, { dispatch, rejectWithValue }) => {
+  async ({ searchText, currentPage }, { dispatch, rejectWithValue }) => {
     try {
-      return await fetchData(
-        search,
-        currentPage,
-        dispatch,
-        // setTotalPages,
-      );
+      return await fetchData(searchText, currentPage, dispatch);
     } catch (error) {
       console.error("Error fetching data: ", error);
       return rejectWithValue(error);

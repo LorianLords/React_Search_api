@@ -1,10 +1,8 @@
 import axios from "axios";
 import { CardDetailProps, CardProps } from "../types/types";
 import removeDuplicates from "../utils/RemoveDuplicates";
-import React from "react";
-import { useAppDispatch } from "../hooks/hooks.ts";
 import { setTotalPages } from "../state/Pagination/PaginationSlice.ts";
-import {AppDispatch} from "../state/store.ts";
+import { AppDispatch } from "../state/store.ts";
 
 const API_URL = "https://api.artic.edu/api/v1";
 const API_IMG_URL = "https://www.artic.edu/iiif/2";
@@ -14,14 +12,12 @@ const api = axios.create({
   timeout: 100000,
 });
 
-
 export const fetchData = async (
   searchItem: string | null,
   currentPage: number,
   dispatch: AppDispatch,
   //setTotalPages: React.Dispatch<React.SetStateAction<number>>,
 ) => {
-
   const url = searchItem ? "/artworks/search" : "/artworks";
   const response = await api.get(url, {
     params: {
@@ -31,16 +27,14 @@ export const fetchData = async (
       page: currentPage || 1,
     },
   });
- dispatch(setTotalPages(response.data.pagination.total_pages));
+  dispatch(setTotalPages(response.data.pagination.total_pages));
   const data = removeDuplicates(response.data.data);
-  console.log(data);
   return (await fetchImg(data)) as CardProps[];
 };
 
 export const fetchImg = async (data: CardProps[]) => {
   return await Promise.all(
     data.map(async (artwork: CardProps) => {
-      //console.log('Artwork:', artwork);
       if (artwork.image_id != null) {
         const imageUrl =
           API_IMG_URL + `/${artwork.image_id}/full/843,/0/default.jpg`;

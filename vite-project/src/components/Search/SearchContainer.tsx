@@ -1,36 +1,28 @@
 import React, { FC, useState } from "react";
 import styles from "./Search.module.css";
 import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
+import { setCurrentPage } from "../../state/Pagination/PaginationSlice.ts";
+import { setSearch } from "../../state/Search/SearchSlice.ts";
 
-interface SearchContainerProps {
+/*interface SearchContainerProps {
   //onSearch: (searchItem: string) => void;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  //setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-}
+}*/
 
-const SearchContainer: FC<SearchContainerProps> = ({
-  search,
-  setSearch,
- // setCurrentPage,
-}: SearchContainerProps) => {
-
-  const [inputText, setInputText] = useState<string>(search);
+const SearchContainer = () => {
+  const dispatch = useAppDispatch();
+  const { searchText } = useAppSelector((state) => state.search);
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const handleSearch = (inputText: string) => {
-    setSearch(inputText);
-    localStorage.setItem("searchText", inputText);
-  };
+  const [inputText, setInput] = useState(searchText);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputText(e.target.value);
+    setInput(e.target.value);
   };
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-  //  setCurrentPage(1);
     if (inputText.trim() === "") {
       searchParams.delete("search");
     } else {
@@ -38,7 +30,9 @@ const SearchContainer: FC<SearchContainerProps> = ({
     }
     setSearchParams(searchParams);
 
-    handleSearch(inputText.trim());
+    dispatch(setCurrentPage(1));
+    dispatch(setSearch(inputText.trim()));
+    localStorage.setItem("searchText", inputText.trim());
   };
 
   return (

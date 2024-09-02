@@ -7,50 +7,41 @@ import {
   setError,
   setLoading,
 } from "../../state/CardList/CardsSlice.ts";
-import { AppDispatch, RootState } from "../../state/store.ts";
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks.ts";
 
 import { CardProps } from "../../types/types.ts";
 
-interface CardListProps {
-  search: string | null;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
-  currentPage: number;
-}
-
-const CardList = ({ search, currentPage }: CardListProps) => {
+const CardList = () => {
   const dispatch = useAppDispatch();
-  const { cardList, loading, error } = useAppSelector(
-    (state: RootState) => state.cards,
-  );
+  const { cardList, loading, error } = useAppSelector((state) => state.cards);
+  const { searchText } = useAppSelector((state) => state.search);
+  const { currentPage } = useAppSelector((state) => state.pagination);
 
   useEffect(() => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
     const signal = controller.signal;
-    // Действие при монтировании компоненты
-    console.log("Компонента смонтирована");
+
+    console.log("Компонента смонтирована"); // Действие при монтировании компоненты
 
     dispatch(setLoading(true));
-    dispatch(fetchCardList({ search, currentPage }));
+    dispatch(fetchCardList({searchText, currentPage}));
 
     return () => {
       console.log("Компонента размонтирована");
       controller.abort(); // Отменяем запрос
     };
-  }, [search, currentPage]);
+  }, [searchText, currentPage]);
+
 
   const errorHandle = () => {
     console.log("Error button clicked");
     dispatch(setError("I crashed!"));
   };
 
-  if (error) {
-    throw new Error(error);
-  }
-  if (loading) {
-    return <Loading />;
-  }
+  if (error) throw new Error(error);
+  if (loading) return <Loading />;
+
   setTimeout(() => {
     if (cardList.length === 0) {
       return (
