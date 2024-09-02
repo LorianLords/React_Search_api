@@ -16,9 +16,6 @@ interface CardListProps {
   search: string | null;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   currentPage: number;
-  setTotalPages: React.Dispatch<React.SetStateAction<number>>;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  isLoading: boolean;
 }
 
 const CardList = ({ search, currentPage }: CardListProps) => {

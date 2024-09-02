@@ -6,13 +6,13 @@ interface SearchContainerProps {
   //onSearch: (searchItem: string) => void;
   search: string;
   setSearch: React.Dispatch<React.SetStateAction<string>>;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  //setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const SearchContainer: FC<SearchContainerProps> = ({
   search,
   setSearch,
-  setCurrentPage,
+ // setCurrentPage,
 }: SearchContainerProps) => {
 
   const [inputText, setInputText] = useState<string>(search);
@@ -30,7 +30,7 @@ const SearchContainer: FC<SearchContainerProps> = ({
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
 
-    setCurrentPage(1);
+  //  setCurrentPage(1);
     if (inputText.trim() === "") {
       searchParams.delete("search");
     } else {

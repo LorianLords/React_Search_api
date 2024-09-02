@@ -1,18 +1,13 @@
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../hooks/hooks.ts";
+import {decrementCurPage, incrementCurPage, setCurrentPage} from "../../state/Pagination/PaginationSlice.ts";
 
-interface PaginationProps {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-  totalPages: number;
-}
 
-const Pagination = ({
-  currentPage,
-  totalPages,
-  setCurrentPage,
-}: PaginationProps) => {
+const Pagination = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { totalPages, currentPage } = useAppSelector((state) => state.pagination);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     searchParams.set("page", currentPage.toString());
@@ -21,11 +16,15 @@ const Pagination = ({
   }, [currentPage, searchParams, setSearchParams]);
 
   const handlePrevious = () => {
-    setCurrentPage(currentPage > 1 ? currentPage - 1 : currentPage);
+    if (currentPage > 1) {
+      dispatch(decrementCurPage());
+    }
   };
 
   const handleNext = () => {
-    setCurrentPage(currentPage <= totalPages ? currentPage + 1 : currentPage);
+    if (currentPage <= totalPages) {
+      dispatch(incrementCurPage());
+    }
   };
 
   return (

@@ -10,29 +10,30 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import styles from "./Home.module.css";
+import { useAppDispatch, useAppSelector } from "../hooks/hooks.ts";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isDetailsOpen, setDetailsOpen] = useState(false);
-  const initialPage = parseInt(searchParams.get("page") || "1", 10);
-  const [currentPage, setCurrentPage] = useState(initialPage);
-  const [totalPages, setTotalPages] = useState(1);
+  const dispatch = useAppDispatch();
 
-  const [isLoading, setLoading] = useState<boolean>(true);
+  const [isDetailsOpen, setDetailsOpen] = useState(false);
+
+  const { currentPage } = useAppSelector((state) => state.pagination);
+  const { loading } = useAppSelector((state) => state.cards);
+
   const [search, setSearch] = useState(
     searchParams.get("search") || localStorage.getItem("searchText") || "",
   );
 
   useEffect(() => {
-    //setCurrentPage(initialPage);
     if (location.pathname.includes("card")) {
       setDetailsOpen(true);
     } else {
       setDetailsOpen(false);
     }
-  }, [initialPage, location ]);
+  }, [ location ]);
 
   const handleSideMenu = () => {
     if (isDetailsOpen) {
@@ -47,7 +48,7 @@ const Home: FC = () => {
       <SearchContainer
         search={search}
         setSearch={setSearch}
-        setCurrentPage={setCurrentPage}
+      //  setCurrentPage={setCurrentPage}
       />
       <hr />
       <ErrorBoundary>
@@ -60,17 +61,10 @@ const Home: FC = () => {
             search={search}
             setSearch={setSearch}
             currentPage={currentPage}
-            setTotalPages={setTotalPages}
-            setIsLoading={setLoading}
-            isLoading={isLoading}
           />
           <Outlet />
-          {!isLoading && (
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalPages={totalPages}
-            />
+          {!loading && (
+            <Pagination/>
           )}
         </div>
       </ErrorBoundary>

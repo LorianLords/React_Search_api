@@ -1,9 +1,8 @@
-import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardProps } from "../../types/types.ts";
 import { fetchData } from "../../services/apiService.ts";
-import React from "react";
 import { Simulate } from "react-dom/test-utils";
-import error = Simulate.error;
+import { AppDispatch, RootState } from "../store.ts";
 
 export interface CardsState {
   cardList: CardProps[];
@@ -22,16 +21,20 @@ export interface FetchProps {
   currentPage: number;
 }
 
-export const fetchCardList = createAsyncThunk(
+export const fetchCardList = createAsyncThunk<
+  CardProps[],
+  FetchProps,
+  { dispatch: AppDispatch; state: RootState }
+>(
   "cards/fetchCardList",
-  async ({ search, currentPage }: FetchProps, { rejectWithValue }) => {
+  async ({ search, currentPage }, { dispatch, rejectWithValue }) => {
     try {
-      const data: CardProps[] = await fetchData(
+      return await fetchData(
         search,
         currentPage,
+        dispatch,
         // setTotalPages,
       );
-      return data;
     } catch (error) {
       console.error("Error fetching data: ", error);
       return rejectWithValue(error);
@@ -48,7 +51,7 @@ const cardsSlice = createSlice({
     },
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     //ассинхронные редюсеры
@@ -68,5 +71,5 @@ const cardsSlice = createSlice({
   },
 });
 
-export const { setLoading,setError } = cardsSlice.actions;
+export const { setLoading, setError } = cardsSlice.actions;
 export default cardsSlice.reducer;

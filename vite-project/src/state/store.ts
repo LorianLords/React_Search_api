@@ -1,9 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cardsReducer from "./CardList/CardsSlice.ts";
-
+import paginationReducer from  "./Pagination/PaginationSlice.ts"
 export const store = configureStore({
   reducer: {
     cards: cardsReducer,
+    pagination: paginationReducer,
   },
 });
 
