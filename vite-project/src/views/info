@@ -1,0 +1,4 @@
+The views folder contains all your React application's web pages
+
+ The user interface structure of each page should be stored in the
+ /pages or /views directory as React components. 

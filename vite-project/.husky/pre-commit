@@ -1,0 +1,9 @@
+prettier $(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g') --write --ignore-unknown
+git update-index --again
+
+# .husky/pre-commit
+. .husky/common.sh
+
+yarn ...
+
+exit 1

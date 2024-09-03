@@ -1,0 +1,3 @@
+The store folder houses your state management files, such as Redux,
+ which are used to make certain functions and variables available
+ throughout your application.
