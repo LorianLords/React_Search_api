@@ -3,9 +3,12 @@ import styles from "../../views/Home.module.css";
 import stylesInfo from "./CardDetails.module.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../Loading.tsx";
-import {fetchDetails, setCardId} from "../../state/DetailsCard/DetailsSlice.tsx";
+import {
+  fetchDetails,
+  setCardId, toggleIsDetailsOpen,
+} from "../../state/DetailsCard/DetailsSlice.tsx";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import {decrementCurPage} from "../../state/Pagination/PaginationSlice.ts";
+import { decrementCurPage } from "../../state/Pagination/PaginationSlice.ts";
 
 const cardDetails: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -33,10 +36,13 @@ const cardDetails: React.FC = () => {
 
   const handleBtnBack = () => {
     const page = currentPage.toString();
-    navigate("/home");
-    searchParams.set("page", page);
-    setSearchParams(searchParams);
     dispatch(setCardId(""));
+    dispatch(toggleIsDetailsOpen(false))
+    setTimeout(() => {
+      navigate("/home");
+      searchParams.set("page", page);
+      setSearchParams(searchParams);
+    }, 800);
   };
   return (
     <div
