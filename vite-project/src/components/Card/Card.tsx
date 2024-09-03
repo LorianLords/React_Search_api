@@ -4,24 +4,27 @@ import { CardProps } from "../../types/types";
 import defaultImg from "../../assets/react.svg";
 import placeholder from "../../assets/placeholder.jpg";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch } from "../../hooks/hooks.ts";
+import {
+  setCardId,
+  toggleIsDetailsOpen,
+} from "../../state/DetailsCard/DetailsSlice.tsx";
 
 const Card: FC<CardProps> = (props: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const handleImageLoad = () => {
-    setIsLoaded(true);
-  };
-
-  const handleImageError = () => {
-    setIsLoaded(false);
-  };
+  const dispatch = useAppDispatch();
 
   const handleCardDetails = (e: React.MouseEvent<HTMLDivElement>) => {
     navigate(`./card/${props.id}`);
     searchParams.set("page", page?.toString() || "1");
     setSearchParams(searchParams);
+    dispatch(setCardId(props.id));
+    setTimeout(() => {
+      dispatch(toggleIsDetailsOpen(true));
+    }, 100);
     e.stopPropagation();
   };
 
@@ -31,8 +34,8 @@ const Card: FC<CardProps> = (props: CardProps) => {
       <img
         src={props.image || defaultImg}
         alt="picture"
-        onLoad={handleImageLoad}
-        onError={handleImageError}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setIsLoaded(false)}
         style={{ display: isLoaded ? "block" : "none" }}
       />
       <h2>{props.title}</h2>

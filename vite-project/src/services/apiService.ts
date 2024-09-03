@@ -51,19 +51,14 @@ export const fetchImg = async (data: CardProps[]) => {
 };
 
 export const fetchCardDetails = async (id?: string) => {
-  try {
-    const url = API_URL + "/artworks/" + id;
-    const response = await api.get(url, {
-      params: {
-        fields:
-          "title,artist_titles,dimensions,short_description,description,date_display,place_of_origin,image_id,category_titles",
-      },
-    });
-    const data = response.data.data;
-    console.log(data);
-    return data as CardDetailProps;
-  } catch (error) {
-    console.error("Error fetching data: ", error);
-    throw error;
-  }
+  const url = API_URL + "/artworks/" + id;
+  const response = await api.get(url, {
+    params: {
+      fields:
+        "title,artist_titles,dimensions,short_description,description,date_display,place_of_origin,image_id,category_titles",
+    },
+  });
+  const data = response.data.data;
+  console.log(data);
+  return data as CardDetailProps;
 };

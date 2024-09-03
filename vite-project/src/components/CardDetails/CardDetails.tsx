@@ -3,67 +3,65 @@ import styles from "../../views/Home.module.css";
 import stylesInfo from "./CardDetails.module.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../Loading.tsx";
-import { fetchCardDetails } from "../../services/apiService.ts";
-import { CardDetailProps } from "../../types/types.ts";
+import {fetchDetails, setCardId} from "../../state/DetailsCard/DetailsSlice.tsx";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
+import {decrementCurPage} from "../../state/Pagination/PaginationSlice.ts";
 
 const cardDetails: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  const { id } = useParams<{ id: string }>();
-  const [details, setDetails] = useState<CardDetailProps>();
-  const [loading, setLoading] = useState(true);
-  const [isVisible, setVisible] = React.useState(false);
+  const { cardId, detInfo, detLoading, error, isVisible, isDetailsOpen } =
+    useAppSelector((state) => state.details);
+  const { currentPage } = useAppSelector((state) => state.pagination);
+
+  //const { id } = useParams<{ id: string }>();
+  //const [details, setDetails] = useState<CardDetailProps>();
+  //const [loading, setLoading] = useState(true);
+  //const [isVisible, setVisible] = React.useState(false);
 
   useEffect(() => {
-    setVisible(true);
-    fetchCardDetails(id)
-      .then((response) => {
-        setDetails(response);
-        setLoading(false);
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error.errorMessage);
-        setLoading(false);
-        setDetails(undefined);
-      });
-  }, [location.pathname]);
+    if (cardId) {
+      dispatch(fetchDetails(cardId));
+    }
+  }, [cardId]);
 
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
   const handleBtnBack = () => {
-    const page = searchParams.get("page") || "1";
+    const page = currentPage.toString();
     navigate("/home");
     searchParams.set("page", page);
     setSearchParams(searchParams);
+    dispatch(setCardId(""));
   };
   return (
     <div
-      className={`${styles.sideDetails} ${isVisible && styles.open}`}
+      className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open}`}
       onClick={handleSideMenu}
     >
-      {loading ? (
+      {detLoading ? (
         <Loading />
       ) : (
         <div className={stylesInfo.container}>
           <div className={stylesInfo.imageContainer}>
             <img
-              src={`https://www.artic.edu/iiif/2/${details?.image_id}/full/450,/0/default.jpg`}
+              src={`https://www.artic.edu/iiif/2/${detInfo?.image_id}/full/450,/0/default.jpg`}
               alt="Art"
             />
           </div>
-          <span>{details?.dimensions}</span>
-          <h1>{details?.title}</h1>
+          <span>{detInfo?.dimensions}</span>
+          <h1>{detInfo?.title}</h1>
           <p>
-            {details?.artist_titles[0]}, {details?.date_display}
+            {detInfo?.artist_titles[0]}, {detInfo?.date_display}
           </p>
-          <p>{details?.place_of_origin}</p>
-          <p>{details?.short_description || details?.description}</p>
+          <p>{detInfo?.place_of_origin}</p>
+          <p>{detInfo?.short_description || detInfo?.description}</p>
           <p>
-            Categories: {details?.category_titles.map((title) => title + ", ")}
+            Categories: {detInfo?.category_titles.map((title) => title + ", ")}
           </p>
 
           <button className={stylesInfo.backBtn} onClick={handleBtnBack}>
