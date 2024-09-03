@@ -55,9 +55,7 @@ describe("CardList", () => {
     render(<CardList search={""} setSearch={mockSetSearch} />);
     setTimeout(() => {}, 10000);
 
-
     await waitFor(() => {
-
       const tittle = screen.getByRole("heading", { name: /Sorry. There are/i });
       expect(tittle).toBeInTheDocument();
       screen.debug();
