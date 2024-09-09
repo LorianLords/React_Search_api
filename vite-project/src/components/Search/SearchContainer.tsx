@@ -32,7 +32,7 @@ const SearchContainer = () => {
 
     dispatch(setCurrentPage(1));
     dispatch(setSearch(inputText.trim()));
-    localStorage.setItem("searchText", inputText.trim());
+    //localStorage.setItem("searchText", inputText.trim());
   };
 
   return (

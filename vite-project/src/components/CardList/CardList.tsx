@@ -10,13 +10,17 @@ import {
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks.ts";
 
 import { CardProps } from "../../types/types.ts";
+import { useGetCardListQuery } from "../../state/Api/ApiSlice.ts";
 
 const CardList = () => {
   const dispatch = useAppDispatch();
   const { cardList, loading, error } = useAppSelector((state) => state.cards);
   const { searchText } = useAppSelector((state) => state.search);
   const { currentPage } = useAppSelector((state) => state.pagination);
-
+  const { data, isLoading } = useGetCardListQuery();
+  if (!isLoading){
+    console.log(data);
+  }
   useEffect(() => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
@@ -25,14 +29,13 @@ const CardList = () => {
     console.log("Компонента смонтирована"); // Действие при монтировании компоненты
 
     dispatch(setLoading(true));
-    dispatch(fetchCardList({searchText, currentPage}));
+    dispatch(fetchCardList({ searchText, currentPage }));
 
     return () => {
       console.log("Компонента размонтирована");
       controller.abort(); // Отменяем запрос
     };
   }, [searchText, currentPage]);
-
 
   const errorHandle = () => {
     console.log("Error button clicked");

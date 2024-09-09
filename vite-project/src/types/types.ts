@@ -5,7 +5,7 @@ export interface CardProps {
   artist_display: string;
   image_id: string;
   image: string | null;
-};
+}
 
 export interface Links {
   name: string;
