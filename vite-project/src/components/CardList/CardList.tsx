@@ -11,16 +11,19 @@ import { useAppSelector, useAppDispatch } from "../../hooks/hooks.ts";
 
 import { CardProps } from "../../types/types.ts";
 import { useGetCardListQuery } from "../../state/Api/ApiSlice.ts";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { SerializedError } from "@reduxjs/toolkit";
+import { fetchData } from "../../services/apiService.ts";
+import { ErrorResponse } from "react-router-dom";
 
 const CardList = () => {
   const dispatch = useAppDispatch();
-  const { cardList, loading, error } = useAppSelector((state) => state.cards);
+  const { cardList, loading } = useAppSelector((state) => state.cards);
   const { searchText } = useAppSelector((state) => state.search);
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { data, isLoading } = useGetCardListQuery();
-  if (!isLoading){
-    console.log(data);
-  }
+  const { isLoading, error, isFetching } = useGetCardListQuery({ searchText, currentPage });
+
+  /*
   useEffect(() => {
     // Создаем экземпляр AbortController
     const controller = new AbortController();
@@ -28,22 +31,36 @@ const CardList = () => {
 
     console.log("Компонента смонтирована"); // Действие при монтировании компоненты
 
-    dispatch(setLoading(true));
-    dispatch(fetchCardList({ searchText, currentPage }));
+    /!*dispatch(setLoading(true));
+    dispatch(fetchCardList({ searchText, currentPage }));*!/
 
     return () => {
       console.log("Компонента размонтирована");
       controller.abort(); // Отменяем запрос
     };
   }, [searchText, currentPage]);
+*/
 
   const errorHandle = () => {
     console.log("Error button clicked");
     dispatch(setError("I crashed!"));
   };
 
-  if (error) throw new Error(error);
-  if (loading) return <Loading />;
+  if (error) {
+    let errorMessage = "Unknown error occurred";
+    if ("status" in error) {
+      // Это FetchBaseQueryError (ошибка от запроса)
+      const fetchError = error as FetchBaseQueryError;
+      errorMessage = `Error ${fetchError.status}: ${fetchError?.data || "Unknown error"}`;
+    } else if ("message" in error) {
+      // Это SerializedError (общая ошибка)
+      const serializedError = error as SerializedError;
+      errorMessage = serializedError.message || "Unknown serialized error";
+    }
+
+    throw new Error(errorMessage);
+  }
+  if (isLoading || isFetching) return <Loading />;
 
   setTimeout(() => {
     if (cardList.length === 0) {

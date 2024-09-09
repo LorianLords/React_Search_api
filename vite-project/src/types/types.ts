@@ -1,3 +1,5 @@
+import cardList from "../components/CardList/CardList.tsx";
+
 export interface CardProps {
   id: number;
   title: string;
@@ -23,3 +25,16 @@ export type CardDetailProps = {
   description: string;
   category_titles: [string];
 };
+
+export interface ApiResponce {
+  config: unknown;
+  data: CardProps[];
+  info: unknown;
+  pagination: {
+    limit: number;
+    next_url: string;
+    offset: number;
+    total: number;
+    total_pages: number;
+  }
+}

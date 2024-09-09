@@ -15,17 +15,17 @@ import {
   setCardId,
   toggleIsDetailsOpen,
 } from "../state/DetailsCard/DetailsSlice.tsx";
+import {useGetCardListQuery} from "../state/Api/ApiSlice.ts";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
-  //const location = useLocation();
   const dispatch = useAppDispatch();
 
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { loading } = useAppSelector((state) => state.cards);
   const { isDetailsOpen, cardId } = useAppSelector((state) => state.details);
-
+  const { searchText } = useAppSelector((state) => state.search);
+  const { isLoading, error, isFetching } = useGetCardListQuery({ searchText, currentPage });
   useEffect(() => {
     /* if (location.pathname.includes("card")) {
       setDetailsOpen(true);
@@ -65,7 +65,7 @@ const Home: FC = () => {
         >
           <CardList />
           <Outlet />
-          {!loading && <Pagination />}
+          {!(isLoading || isFetching) && <Pagination />}
         </div>
       </ErrorBoundary>
     </div>

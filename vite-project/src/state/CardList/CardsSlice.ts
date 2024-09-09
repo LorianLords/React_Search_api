@@ -21,21 +21,21 @@ interface FetchProps {
   currentPage: number;
 }
 
-export const fetchCardList = createAsyncThunk<
-  CardProps[],
-  FetchProps,
-  { dispatch: AppDispatch; state: RootState }
->(
-  "cards/fetchCardList",
-  async ({ searchText, currentPage }, { dispatch, rejectWithValue }) => {
-    try {
-      return await fetchData(searchText, currentPage, dispatch);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-      return rejectWithValue(error);
-    }
-  },
-);
+// export const fetchCardList = createAsyncThunk<
+//   CardProps[],
+//   FetchProps,
+//   { dispatch: AppDispatch; state: RootState }
+// >(
+//   "cards/fetchCardList",
+//   async ({ searchText, currentPage }, { dispatch, rejectWithValue }) => {
+//     try {
+//       return await fetchData(searchText, currentPage, dispatch);
+//     } catch (error) {
+//       console.error("Error fetching data: ", error);
+//       return rejectWithValue(error);
+//     }
+//   },
+// );
 
 const cardsSlice = createSlice({
   name: "cards",
@@ -47,24 +47,27 @@ const cardsSlice = createSlice({
     setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
+    setCardList: (state, action: PayloadAction<CardProps[]>) => {
+      state.cardList = action.payload;
+    }
   },
-  extraReducers: (builder) => {
-    //ассинхронные редюсеры
-    builder
-      .addCase(fetchCardList.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchCardList.fulfilled, (state, action) => {
-        state.loading = false;
-        state.cardList = action.payload;
-      })
-      .addCase(fetchCardList.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
-      });
-  },
+  // extraReducers: (builder) => {
+  //   //ассинхронные редюсеры
+  //   builder
+  //     .addCase(fetchCardList.pending, (state) => {
+  //       state.loading = true;
+  //       state.error = null;
+  //     })
+  //     .addCase(fetchCardList.fulfilled, (state, action) => {
+  //       state.loading = false;
+  //       state.cardList = action.payload;
+  //     })
+  //     .addCase(fetchCardList.rejected, (state, action) => {
+  //       state.loading = false;
+  //       state.error = action.payload as string;
+  //     });
+  // },
 });
 
-export const { setLoading, setError } = cardsSlice.actions;
+export const { setLoading, setError, setCardList } = cardsSlice.actions;
 export default cardsSlice.reducer;
