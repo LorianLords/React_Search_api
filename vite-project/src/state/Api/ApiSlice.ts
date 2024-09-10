@@ -1,6 +1,6 @@
-import {Api, createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {CardsState, setCardList} from "../CardList/CardsSlice.ts";
-import {ApiResponce, CardProps} from "../../types/types.ts";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setCardList } from "../CardList/CardsSlice.ts";
+import { ApiResponse, CardProps, DataApi } from "../../types/types.ts";
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { setSearch } from "../Search/SearchSlice.ts";
 import removeDuplicates from "../../utils/RemoveDuplicates.ts";
@@ -23,7 +23,7 @@ export const apiSlice = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "https://api.artic.edu/api/v1" }),
   endpoints: (builder) => ({
     getCardList: builder.query<
-      ApiResponce,
+      DataApi,
       { searchText: string | null; currentPage: number }
     >({
       query: ({ searchText, currentPage }) => {
@@ -38,28 +38,24 @@ export const apiSlice = createApi({
           },
         };
       },
+      transformResponse: async (response: ApiResponse): Promise<DataApi> => {
+        console.log(response.data);
+        const data = removeDuplicates(response.data);
+        const artworksWithImage = (await fetchImg(data)) as CardProps[];
+        return {
+          cards: artworksWithImage,
+          total_pages: response.pagination.total_pages,
+        };
+      },
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          const artworks = removeDuplicates(data.data) as CardProps[];
-          const artworksWithImages = await fetchImg(artworks);
-          dispatch(setTotalPages(data.pagination.total_pages));
-          dispatch(setCardList(artworksWithImages));
-          console.log("AFTER API ARTWORKS");
-          console.log(artworksWithImages);
+
+          dispatch(setTotalPages(data.total_pages));
         } catch (error) {
-          console.error(
-            "Error fetching artworks with invalid searchText: ",
-            error,
-          );
+          console.log(error);
         }
       },
-
-     /* transformResponse: async (response: ApiResponse) => {
-        const artworks = removeDuplicates(response.data) as CardProps[];
-        const artworksWithImages = await fetchImg(artworks);
-        return artworksWithImages;
-      },*/
     }),
   }),
 });

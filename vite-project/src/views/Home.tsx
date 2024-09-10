@@ -5,7 +5,6 @@ import ErrorBoundary from "../services/ErrorBoundary";
 import Pagination from "../components/Pagination/Pagination.tsx";
 import {
   Outlet,
-  useLocation,
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
@@ -15,7 +14,7 @@ import {
   setCardId,
   toggleIsDetailsOpen,
 } from "../state/DetailsCard/DetailsSlice.tsx";
-import {useGetCardListQuery} from "../state/Api/ApiSlice.ts";
+import { useGetCardListQuery } from "../state/Api/ApiSlice.ts";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -23,23 +22,12 @@ const Home: FC = () => {
   const dispatch = useAppDispatch();
 
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { isDetailsOpen, cardId } = useAppSelector((state) => state.details);
+  const { isDetailsOpen} = useAppSelector((state) => state.details);
   const { searchText } = useAppSelector((state) => state.search);
-  const { isLoading, error, isFetching } = useGetCardListQuery({ searchText, currentPage });
-  useEffect(() => {
-    /* if (location.pathname.includes("card")) {
-      setDetailsOpen(true);
-    } else {
-      setDetailsOpen(false);
-    }*/
-    console.log("USE EFF");
-    console.log(cardId);
-    /*  if (cardId) {
-      dispatch(toggleIsDetailsOpen(true));
-    } else {
-      dispatch(toggleIsDetailsOpen(false));
-    }*/
-  }, [cardId]);
+  const { isLoading, isFetching } = useGetCardListQuery({
+    searchText,
+    currentPage,
+  });
 
   const handleSideMenu = () => {
     if (isDetailsOpen) {

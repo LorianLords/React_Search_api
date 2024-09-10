@@ -1,49 +1,33 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
 import Loading from "../Loading.tsx";
-import {
-  fetchCardList,
-  setError,
-  setLoading,
-} from "../../state/CardList/CardsSlice.ts";
+
 import { useAppSelector, useAppDispatch } from "../../hooks/hooks.ts";
 
 import { CardProps } from "../../types/types.ts";
 import { useGetCardListQuery } from "../../state/Api/ApiSlice.ts";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { SerializedError } from "@reduxjs/toolkit";
-import { fetchData } from "../../services/apiService.ts";
-import { ErrorResponse } from "react-router-dom";
+
+import { setTotalPages } from "../../state/Pagination/PaginationSlice.ts";
 
 const CardList = () => {
   const dispatch = useAppDispatch();
-  const { cardList, loading } = useAppSelector((state) => state.cards);
+
   const { searchText } = useAppSelector((state) => state.search);
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { isLoading, error, isFetching } = useGetCardListQuery({ searchText, currentPage });
-
-  /*
-  useEffect(() => {
-    // Создаем экземпляр AbortController
-    const controller = new AbortController();
-    const signal = controller.signal;
-
-    console.log("Компонента смонтирована"); // Действие при монтировании компоненты
-
-    /!*dispatch(setLoading(true));
-    dispatch(fetchCardList({ searchText, currentPage }));*!/
-
-    return () => {
-      console.log("Компонента размонтирована");
-      controller.abort(); // Отменяем запрос
-    };
-  }, [searchText, currentPage]);
-*/
+  const { isLoading, error, isFetching, data } = useGetCardListQuery({
+    searchText,
+    currentPage,
+  });
+  const cardList = data?.cards;
+ 
 
   const errorHandle = () => {
     console.log("Error button clicked");
-    dispatch(setError("I crashed!"));
+    //dispatch(setError("I crashed!"));
+    throw new Error("I crashed!");
   };
 
   if (error) {
@@ -62,15 +46,13 @@ const CardList = () => {
   }
   if (isLoading || isFetching) return <Loading />;
 
-  setTimeout(() => {
-    if (cardList.length === 0) {
-      return (
-        <div className="about">
-          <h3>Sorry. There are no such pictures </h3>
-        </div>
-      );
-    }
-  }, 10000);
+  if (!cardList || cardList.length === 0) {
+    return (
+      <div className="about">
+        <h3>Sorry. There are no such pictures </h3>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.cardList}>

@@ -26,15 +26,27 @@ export type CardDetailProps = {
   category_titles: [string];
 };
 
-export interface ApiResponce {
-  config: unknown;
-  data: CardProps[];
-  info: unknown;
+export interface ApiResponse {
+  preference: null;
   pagination: {
-    limit: number;
-    next_url: string;
-    offset: number;
     total: number;
+    limit: number;
+    offset: number;
     total_pages: number;
-  }
+    current_page: number;
+  };
+  data: CardProps[];
+  info: {
+    license_text: string;
+    license_links: [string];
+    version: string;
+  };
+  config: {
+    iiif_url: string;
+    website_url: string;
+  };
+}
+export interface DataApi {
+  cards: CardProps[];
+  total_pages: number;
 }

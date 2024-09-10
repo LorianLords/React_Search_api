@@ -6,7 +6,6 @@ import detailsReducer from "./DetailsCard/DetailsSlice.tsx";
 import listenerMiddleware, { apiSlice } from "./Api/ApiSlice.ts";
 export const store = configureStore({
   reducer: {
-    cards: cardsReducer,
     pagination: paginationReducer,
     search: searchReducer,
     details: detailsReducer,
