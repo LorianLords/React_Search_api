@@ -4,31 +4,30 @@ import stylesInfo from "./CardDetails.module.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../Loading.tsx";
 import {
-  fetchDetails,
-  setCardId, toggleIsDetailsOpen,
+  setCardId,
+  toggleIsDetailsOpen,
 } from "../../state/DetailsCard/DetailsSlice.tsx";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
 import { decrementCurPage } from "../../state/Pagination/PaginationSlice.ts";
+import { useGetCardDetailsQuery } from "../../state/DetailsCard/DetailsApi.ts";
 
 const cardDetails: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const { cardId, detInfo, detLoading, error, isVisible, isDetailsOpen } =
-    useAppSelector((state) => state.details);
+  const { cardId, isDetailsOpen } = useAppSelector((state) => state.details);
+  const {
+    data: detInfo,
+    isLoading,
+    isFetching,
+    error,
+  } = useGetCardDetailsQuery({ cardId });
   const { currentPage } = useAppSelector((state) => state.pagination);
 
   //const { id } = useParams<{ id: string }>();
   //const [details, setDetails] = useState<CardDetailProps>();
   //const [loading, setLoading] = useState(true);
   //const [isVisible, setVisible] = React.useState(false);
-
-  useEffect(() => {
-    if (cardId) {
-      dispatch(fetchDetails(cardId));
-    }
-  }, [cardId]);
 
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -37,19 +36,20 @@ const cardDetails: React.FC = () => {
   const handleBtnBack = () => {
     const page = currentPage.toString();
     dispatch(setCardId(""));
-    dispatch(toggleIsDetailsOpen(false))
+    dispatch(toggleIsDetailsOpen(false));
     setTimeout(() => {
       navigate("/home");
       searchParams.set("page", page);
       setSearchParams(searchParams);
     }, 800);
   };
+
   return (
     <div
       className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open}`}
       onClick={handleSideMenu}
     >
-      {detLoading ? (
+      {(isLoading || isFetching) ? (
         <Loading />
       ) : (
         <div className={stylesInfo.container}>

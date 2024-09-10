@@ -3,7 +3,6 @@ import { CardDetailProps } from "../../types/types.ts";
 import { AppDispatch, RootState } from "../store.ts";
 import { fetchCardDetails } from "../../services/apiService.ts";
 
-
 export interface DetailsState {
   isDetailsOpen: boolean;
   cardId: string;
@@ -21,7 +20,7 @@ const initialState: DetailsState = {
   isVisible: false,
   error: null,
 };
-
+/*
 export const fetchDetails = createAsyncThunk<
   CardDetailProps,
   string,
@@ -33,7 +32,7 @@ export const fetchDetails = createAsyncThunk<
     console.error("Error fetching data: ", error);
     return rejectWithValue(error);
   }
-});
+});*/
 
 const DetailsSlice = createSlice({
   name: "details",
@@ -46,7 +45,7 @@ const DetailsSlice = createSlice({
       state.cardId = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  /*extraReducers: (builder) => {
     //ассинхронные редюсеры
     builder
       .addCase(fetchDetails.pending, (state) => {
@@ -63,7 +62,7 @@ const DetailsSlice = createSlice({
         state.detLoading = false;
         state.error = action.payload as string;
       });
-  },
+  },*/
 });
 
 export const { toggleIsDetailsOpen, setCardId } = DetailsSlice.actions;

@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-import cardsReducer from "./CardList/CardsSlice.ts";
 import paginationReducer from "./Pagination/PaginationSlice.ts";
 import searchReducer from "./Search/SearchSlice.ts";
 import detailsReducer from "./DetailsCard/DetailsSlice.tsx";

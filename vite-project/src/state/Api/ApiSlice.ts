@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCardList } from "../CardList/CardsSlice.ts";
+
 import { ApiResponse, CardProps, DataApi } from "../../types/types.ts";
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { setSearch } from "../Search/SearchSlice.ts";
@@ -39,7 +39,6 @@ export const apiSlice = createApi({
         };
       },
       transformResponse: async (response: ApiResponse): Promise<DataApi> => {
-        console.log(response.data);
         const data = removeDuplicates(response.data);
         const artworksWithImage = (await fetchImg(data)) as CardProps[];
         return {
@@ -50,7 +49,6 @@ export const apiSlice = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-
           dispatch(setTotalPages(data.total_pages));
         } catch (error) {
           console.log(error);
