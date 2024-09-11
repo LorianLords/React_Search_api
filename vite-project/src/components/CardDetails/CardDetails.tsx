@@ -5,10 +5,11 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../Loading.tsx";
 import {
   setCardId,
+  setIsBlocked,
   toggleIsDetailsOpen,
 } from "../../state/DetailsCard/DetailsSlice.tsx";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import { decrementCurPage } from "../../state/Pagination/PaginationSlice.ts";
+
 import { useGetCardDetailsQuery } from "../../state/DetailsCard/DetailsApi.ts";
 
 const cardDetails: React.FC = () => {
@@ -20,14 +21,8 @@ const cardDetails: React.FC = () => {
     data: detInfo,
     isLoading,
     isFetching,
-    error,
-  } = useGetCardDetailsQuery({ cardId });
+  } = useGetCardDetailsQuery({ cardId }, { skip: !cardId });
   const { currentPage } = useAppSelector((state) => state.pagination);
-
-  //const { id } = useParams<{ id: string }>();
-  //const [details, setDetails] = useState<CardDetailProps>();
-  //const [loading, setLoading] = useState(true);
-  //const [isVisible, setVisible] = React.useState(false);
 
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -41,6 +36,7 @@ const cardDetails: React.FC = () => {
       navigate("/home");
       searchParams.set("page", page);
       setSearchParams(searchParams);
+      dispatch(setIsBlocked(false));
     }, 800);
   };
 
@@ -49,7 +45,7 @@ const cardDetails: React.FC = () => {
       className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open}`}
       onClick={handleSideMenu}
     >
-      {(isLoading || isFetching) ? (
+      {isLoading || isFetching ? (
         <Loading />
       ) : (
         <div className={stylesInfo.container}>

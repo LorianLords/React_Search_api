@@ -22,14 +22,17 @@ const Home: FC = () => {
   const dispatch = useAppDispatch();
 
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { isDetailsOpen} = useAppSelector((state) => state.details);
+  const { isDetailsOpen, isBlocked} = useAppSelector((state) => state.details);
   const { searchText } = useAppSelector((state) => state.search);
   const { isLoading, isFetching } = useGetCardListQuery({
     searchText,
     currentPage,
   });
 
-  const handleSideMenu = () => {
+  const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isBlocked) {
+      e.preventDefault();
+    }
     if (isDetailsOpen) {
       dispatch(toggleIsDetailsOpen(false));
       setTimeout(() => {
@@ -37,7 +40,7 @@ const Home: FC = () => {
         searchParams.set("page", currentPage.toString());
         setSearchParams(searchParams);
         dispatch(setCardId(""));
-      }, 1000);
+      }, 800);
     }
   };
 
