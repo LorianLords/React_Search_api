@@ -29,7 +29,8 @@ const cardDetails: React.FC = () => {
   };
 
   const handleBtnBack = () => {
-    const page = currentPage.toString();
+    dispatch(toggleIsDetailsOpen(false));
+/*    const page = currentPage.toString();
     dispatch(setCardId(""));
     dispatch(toggleIsDetailsOpen(false));
     setTimeout(() => {
@@ -37,7 +38,7 @@ const cardDetails: React.FC = () => {
       searchParams.set("page", page);
       setSearchParams(searchParams);
       dispatch(setIsBlocked(false));
-    }, 800);
+    }, 800);*/
   };
 
   return (

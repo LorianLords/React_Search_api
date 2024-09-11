@@ -10,30 +10,30 @@ import {
   setIsBlocked,
   toggleIsDetailsOpen,
 } from "../../state/DetailsCard/DetailsSlice.tsx";
+import { logDOM } from "@testing-library/react";
 
 const Card: FC<CardProps> = (props: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page");
-  const { isBlocked } = useAppSelector((state) => state.details);
+  const { isBlocked, isDetailsOpen } = useAppSelector((state) => state.details);
   const dispatch = useAppDispatch();
 
   const handleCardDetails = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (isBlocked) {
-      e.preventDefault();
-    }
-    dispatch(setIsBlocked(true));
+    if (!isBlocked) {
+      console.log(isBlocked, "Is block");
+      console.log("Card details");
+      navigate(`./card/${props.id}`);
+      searchParams.set("page", page?.toString() || "1");
+      setSearchParams(searchParams);
+      dispatch(setCardId(props.id));
 
-    navigate(`./card/${props.id}`);
-    searchParams.set("page", page?.toString() || "1");
-    setSearchParams(searchParams);
-    dispatch(setCardId(props.id));
-    setTimeout(() => {
-      dispatch(toggleIsDetailsOpen(true));
-      dispatch(setIsBlocked(false));
-    }, 100);
-    e.stopPropagation();
+      setTimeout(() => {
+        dispatch(toggleIsDetailsOpen(true));
+      }, 200);
+      e.stopPropagation();
+    }
   };
 
   return (
