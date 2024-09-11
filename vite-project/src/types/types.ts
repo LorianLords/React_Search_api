@@ -1,4 +1,5 @@
 import cardList from "../components/CardList/CardList.tsx";
+import React from "react";
 
 export interface CardProps {
   id: number;
@@ -50,3 +51,8 @@ export interface DataApi {
   cards: CardProps[];
   total_pages: number;
 }
+export interface ThemeType {
+  theme: Theme;
+  setTheme: React.Dispatch<React.SetStateAction<"light" | "dark">> | null;
+}
+export type Theme = "light" | "dark";

@@ -1,0 +1,7 @@
+.app-container.dark{
+    background-image: url("./assets/dark_wallper2.jpg");
+}
+
+.app-container.light{
+    background-image: url("./assets/light_blue_wallper.jpg");
+}

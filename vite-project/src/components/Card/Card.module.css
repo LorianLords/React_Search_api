@@ -1,9 +1,8 @@
 .card {
-  background-color: rgba(40, 38, 38, 0.77);
+
   display: flex;
   flex-direction: column;
-  color: white;
-  border: 4px solid darkcyan;
+
   margin: 20px;
   border-radius: 5px;
   padding: 20px;
@@ -32,6 +31,20 @@
   -webkit-line-clamp: 2; /* Количество строк до обрезки */
   -webkit-box-orient: vertical; /* Вертикальная ориентация */
 }
-.card:hover {
+.card.dark:hover {
   background-color: #c4b1b1;
+}
+
+.card.light:hover {
+  background-color: rgba(174, 196, 210, 0.81);
+}
+.card.light{
+  background-color: rgba(57, 117, 160, 0.77);
+  color: darkslategrey;
+  border: none;
+}
+.card.dark{
+  background-color: rgba(40, 38, 38, 0.77);
+  color: white;
+  border: 4px solid darkcyan;
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../views/Home.module.css";
 import stylesInfo from "./CardDetails.module.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -11,10 +11,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
 
 import { useGetCardDetailsQuery } from "../../state/DetailsCard/DetailsApi.ts";
+import ThemeContext from "../../services/ThemeContext.ts";
 
 const cardDetails: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { cardId, isDetailsOpen } = useAppSelector((state) => state.details);
   const {
@@ -22,34 +21,26 @@ const cardDetails: React.FC = () => {
     isLoading,
     isFetching,
   } = useGetCardDetailsQuery({ cardId }, { skip: !cardId });
-  const { currentPage } = useAppSelector((state) => state.pagination);
-
+  const { theme } = useContext(ThemeContext);
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
   const handleBtnBack = () => {
     dispatch(toggleIsDetailsOpen(false));
-/*    const page = currentPage.toString();
-    dispatch(setCardId(""));
-    dispatch(toggleIsDetailsOpen(false));
-    setTimeout(() => {
-      navigate("/home");
-      searchParams.set("page", page);
-      setSearchParams(searchParams);
-      dispatch(setIsBlocked(false));
-    }, 800);*/
   };
 
   return (
     <div
-      className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open}`}
+      className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open} `}
       onClick={handleSideMenu}
     >
       {isLoading || isFetching ? (
         <Loading />
       ) : (
-        <div className={stylesInfo.container}>
+        <div
+          className={`${stylesInfo.container} ${theme === "light" ? stylesInfo.light : stylesInfo.dark} `}
+        >
           <div className={stylesInfo.imageContainer}>
             <img
               src={`https://www.artic.edu/iiif/2/${detInfo?.image_id}/full/450,/0/default.jpg`}

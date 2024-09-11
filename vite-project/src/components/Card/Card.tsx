@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, {FC, useCallback, useContext, useState} from "react";
 import styles from "./Card.module.css";
 import { CardProps } from "../../types/types";
 import defaultImg from "../../assets/react.svg";
@@ -11,6 +11,7 @@ import {
   toggleIsDetailsOpen,
 } from "../../state/DetailsCard/DetailsSlice.tsx";
 import { logDOM } from "@testing-library/react";
+import ThemeContext from "../../services/ThemeContext.ts";
 
 const Card: FC<CardProps> = (props: CardProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -19,6 +20,7 @@ const Card: FC<CardProps> = (props: CardProps) => {
   const page = searchParams.get("page");
   const { isBlocked, isDetailsOpen } = useAppSelector((state) => state.details);
   const dispatch = useAppDispatch();
+  const { theme } = useContext(ThemeContext);
 
   const handleCardDetails = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!isBlocked) {
@@ -37,7 +39,7 @@ const Card: FC<CardProps> = (props: CardProps) => {
   };
 
   return (
-    <div className={styles.card} onClick={handleCardDetails}>
+    <div className={`${styles.card}  ${theme === 'light' ? styles.light : styles.dark}`} onClick={handleCardDetails}>
       {!isLoaded && <img src={placeholder} alt="placeholder" />}
       <img
         src={props.image || defaultImg}
