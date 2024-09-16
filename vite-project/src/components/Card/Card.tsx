@@ -47,9 +47,12 @@ const Card: FC<CardProps> = (props: CardProps) => {
       className={`${styles.card}  ${theme === "light" ? styles.light : styles.dark}`}
       onClick={handleCardDetails}
     >
-      <div className={styles.checkboxСontainer}  onClick={(e) => {
-        e.stopPropagation();
-      }}>
+      <div
+        className={styles.checkboxСontainer}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <div
           className={`${styles.checkboxWrapper}  ${theme === "light" ? styles.light : styles.dark}`}
         >
@@ -58,7 +61,6 @@ const Card: FC<CardProps> = (props: CardProps) => {
             className={styles.checkbox}
             checked={selectedCards.includes(props.id.toString())}
             onChange={() => handleCheckboxChange(props.id)}
-
           />
         </div>
       </div>

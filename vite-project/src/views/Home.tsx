@@ -12,6 +12,7 @@ import {
   toggleIsDetailsOpen,
 } from "../state/DetailsCard/DetailsSlice.tsx";
 import { useGetCardListQuery } from "../state/Api/ApiSlice.ts";
+import FooterPopup from "../components/FooterPopup/FooterPopup.tsx";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,6 +20,7 @@ const Home: FC = () => {
   const dispatch = useAppDispatch();
   //const page = searchParams.get("page");
   const { currentPage } = useAppSelector((state) => state.pagination);
+
   const { isDetailsOpen, isBlocked, cardId } = useAppSelector(
     (state) => state.details,
   );
@@ -29,7 +31,7 @@ const Home: FC = () => {
   });
 
   useEffect(() => {
-    console.log("useEff", isDetailsOpen)
+    console.log("useEff", isDetailsOpen);
     if (!isDetailsOpen) {
       dispatch(setIsBlocked(true));
       setTimeout(() => {
@@ -47,17 +49,17 @@ const Home: FC = () => {
       e.preventDefault();
     }
     dispatch(toggleIsDetailsOpen(false));
-   /* if (isDetailsOpen) {
+    /* if (isDetailsOpen) {
       console.log("Home yes")
       dispatch(toggleIsDetailsOpen(false));
       console.log(isDetailsOpen);*/
-      /*      setTimeout(() => {
+    /*      setTimeout(() => {
         navigate("/home");
         searchParams.set("page", currentPage.toString());
         setSearchParams(searchParams);
         dispatch(setCardId(""));
       }, 800);*/
- //   }
+    //   }
   };
 
   return (
@@ -74,6 +76,7 @@ const Home: FC = () => {
           <Outlet />
           {!(isLoading || isFetching) && <Pagination />}
         </div>
+         <FooterPopup />
       </ErrorBoundary>
     </div>
   );
