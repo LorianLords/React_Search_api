@@ -1,7 +1,44 @@
-.app-container.dark{
-    background-image: url("./assets/dark_wallper2.jpg");
+.app-container {
+    position: relative;
+    min-height: 100vh;
+    /* Другие стили */
 }
 
-.app-container.light{
+.app-container::before,
+.app-container::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    transition: opacity 1s ease;
+    z-index: -1; /* Помещаем фоновые изображения позади содержимого */
+}
+
+/* Светлая тема */
+.app-container.light::before {
+    background-color: #8ee6fc;
     background-image: url("./assets/light_blue_wallper.jpg");
+    opacity: 1;
+}
+
+.app-container.light::after {
+    background-color: #8ee6fc;
+    background-image: url("./assets/dark_wallper2.jpg");
+    opacity: 0;
+}
+
+/* Темная тема */
+.app-container.dark::before {
+    background-color: #8ee6fc;
+    background-image: url("./assets/light_blue_wallper.jpg");
+    opacity: 0;
+}
+
+.app-container.dark::after {
+    background-image: url("./assets/dark_wallper2.jpg");
+    opacity: 1;
 }

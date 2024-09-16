@@ -5,7 +5,7 @@ const RadioButton = () => {
   const { theme, setTheme } = useContext(themeContext);
   return (
     <div>
-      <h1>Theme toggle</h1>
+
       <label htmlFor="">
         <input
           type="radio"
@@ -15,7 +15,7 @@ const RadioButton = () => {
         />{" "}
         Light
       </label>
-      <label style={{ marginLeft: "20px" }}>
+      <label style={{ marginLeft: "5px", color: "black" }}>
         <input
           type="radio"
           value="dark"

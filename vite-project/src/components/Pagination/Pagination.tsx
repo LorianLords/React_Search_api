@@ -6,7 +6,7 @@ import {
   incrementCurPage,
   setCurrentPage,
 } from "../../state/Pagination/PaginationSlice.ts";
-
+import styles from "./Pagination.module.css"
 const Pagination = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { totalPages, currentPage } = useAppSelector(
@@ -33,12 +33,12 @@ const Pagination = () => {
   };
 
   return (
-    <div>
-      <button onClick={handlePrevious}>Previous</button>
-      <span>
+    <div className={styles.pagination}>
+      <button className={styles.pagBtn} onClick={handlePrevious}>Previous</button>
+      <span className={styles.pagText}>
         Page {currentPage} of {totalPages}
       </span>
-      <button onClick={handleNext}>Next</button>
+      <button className={styles.pagBtn} onClick={handleNext}>Next</button>
     </div>
   );
 };

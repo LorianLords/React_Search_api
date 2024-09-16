@@ -3,13 +3,17 @@
   height: 150px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   margin: -2px -2px 0 -2px;
+  border-bottom: black solid 1px;
 }
 
 .container.light{
-  background-color: cornflowerblue;
+  transition: background-color 0.7s ease;
+  background-color: #2A6F9E;
 }
 .container.dark{
-  background-color: #181e35;
+  transition: background-color 0.7s ease;
+  background-color: #1f242f;
 }

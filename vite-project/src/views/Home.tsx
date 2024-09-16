@@ -17,7 +17,7 @@ const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const page = searchParams.get("page");
+  //const page = searchParams.get("page");
   const { currentPage } = useAppSelector((state) => state.pagination);
   const { isDetailsOpen, isBlocked, cardId } = useAppSelector(
     (state) => state.details,
@@ -63,7 +63,7 @@ const Home: FC = () => {
   return (
     <div>
       <SearchContainer />
-      <hr />
+
       <ErrorBoundary>
         <div
           id={"content-container"}

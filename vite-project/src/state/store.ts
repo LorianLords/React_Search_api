@@ -3,8 +3,10 @@ import paginationReducer from "./Pagination/PaginationSlice.ts";
 import searchReducer from "./Search/SearchSlice.ts";
 import detailsReducer from "./DetailsCard/DetailsSlice.tsx";
 import listenerMiddleware, { apiSlice } from "./Api/ApiSlice.ts";
+import cardsReducer from "./CardList/CardsSlice.ts";
 export const store = configureStore({
   reducer: {
+    cardList: cardsReducer,
     pagination: paginationReducer,
     search: searchReducer,
     details: detailsReducer,

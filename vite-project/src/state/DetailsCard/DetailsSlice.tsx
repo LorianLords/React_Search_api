@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardDetailProps } from "../../types/types.ts";
 import { AppDispatch, RootState } from "../store.ts";
-import { fetchCardDetails } from "../../services/apiService.ts";
+//import { fetchCardDetails } from "../../services/apiService.ts";
 
 export interface DetailsState {
   isDetailsOpen: boolean;
@@ -39,5 +39,6 @@ const DetailsSlice = createSlice({
   },
 });
 
-export const { toggleIsDetailsOpen, setCardId, setIsBlocked } = DetailsSlice.actions;
+export const { toggleIsDetailsOpen, setCardId, setIsBlocked } =
+  DetailsSlice.actions;
 export default DetailsSlice.reducer;

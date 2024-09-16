@@ -57,7 +57,7 @@ const CardList = () => {
   return (
     <div className={styles.cardList}>
       <button className={styles.errButton} onClick={errorHandle}>
-        Error button
+        Error
       </button>
       {cardList.map((item: CardProps) => (
         <Card

@@ -6,6 +6,7 @@ import { setSearch } from "../Search/SearchSlice.ts";
 import removeDuplicates from "../../utils/RemoveDuplicates.ts";
 import { fetchImg } from "../../services/apiService.ts";
 import { setTotalPages } from "../Pagination/PaginationSlice.ts";
+import {setCardList} from "../CardList/CardsSlice.ts";
 
 const listenerMiddleware = createListenerMiddleware();
 
@@ -50,6 +51,7 @@ export const apiSlice = createApi({
         try {
           const { data } = await queryFulfilled;
           dispatch(setTotalPages(data.total_pages));
+          dispatch(setCardList(data.cards));
         } catch (error) {
           console.log(error);
         }

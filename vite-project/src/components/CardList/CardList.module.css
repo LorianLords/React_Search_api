@@ -1,4 +1,5 @@
 .cardList {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -16,6 +17,6 @@
   margin: 0;
   height: 40px;
   position: absolute;
-  top: 120px;
-  right: 20px;
+
+  right: 10px;
 }
