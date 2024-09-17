@@ -17,6 +17,8 @@ const FooterPopup = () => {
         setIsVisible(false);
       }
     }, 100);
+
+    console.log(cardList)
   }, [selectedCards]);
 
   const handleDeselect = () => {

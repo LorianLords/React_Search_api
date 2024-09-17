@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Card from "../Card/Card";
 import styles from "./CardList.module.css";
 import Loading from "../Loading.tsx";
@@ -13,8 +13,8 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { setTotalPages } from "../../state/Pagination/PaginationSlice.ts";
 
 const CardList = () => {
-  const dispatch = useAppDispatch();
 
+  const [handErr, setHandErr] = useState(false)
   const { searchText } = useAppSelector((state) => state.search);
   const { currentPage } = useAppSelector((state) => state.pagination);
   const { isLoading, error, isFetching, data } = useGetCardListQuery({
@@ -27,7 +27,8 @@ const CardList = () => {
   const errorHandle = () => {
     console.log("Error button clicked");
     //dispatch(setError("I crashed!"));
-    throw new Error("I crashed!");
+    setHandErr(true)
+
   };
 
   if (error) {
@@ -44,6 +45,7 @@ const CardList = () => {
 
     throw new Error(errorMessage);
   }
+  if (handErr) throw new Error("I crashed!");
   if (isLoading || isFetching) return <Loading />;
 
   if (!cardList || cardList.length === 0) {

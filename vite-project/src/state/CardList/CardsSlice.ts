@@ -52,7 +52,7 @@ const cardsSlice = createSlice({
       state.error = action.payload;
     },
     setCardList: (state, action: PayloadAction<CardProps[]>) => {
-      state.cardList = action.payload;
+      state.cardList = state.cardList.concat(action.payload) ;
     },
     toggleCard: (state, action: PayloadAction<string>) => {
       const cardId = action.payload;
