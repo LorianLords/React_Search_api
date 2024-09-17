@@ -13,18 +13,20 @@ import {
 } from "../state/DetailsCard/DetailsSlice.tsx";
 import { useGetCardListQuery } from "../state/Api/ApiSlice.ts";
 import FooterPopup from "../components/FooterPopup/FooterPopup.tsx";
+import SuccessDownloading from "../components/SuccessDownloading/SuccessDownloading.tsx";
+import { setIsSuccess } from "../state/CardList/CardsSlice.ts";
 
 const Home: FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  //const page = searchParams.get("page");
-  const { currentPage } = useAppSelector((state) => state.pagination);
 
+  const { isSuccess } = useAppSelector((state) => state.cardList);
+  const { searchText } = useAppSelector((state) => state.search);
+  const { currentPage } = useAppSelector((state) => state.pagination);
   const { isDetailsOpen, isBlocked, cardId } = useAppSelector(
     (state) => state.details,
   );
-  const { searchText } = useAppSelector((state) => state.search);
   const { isLoading, isFetching } = useGetCardListQuery({
     searchText,
     currentPage,
@@ -44,22 +46,19 @@ const Home: FC = () => {
     }
   }, [isDetailsOpen]);
 
+  useEffect(() => {     // for isSuccess panel for automatic closing
+    if (isSuccess) {
+      setTimeout(() => {
+        dispatch(setIsSuccess(false));
+      }, 3200);
+    }
+  }, [isSuccess]);
+
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isBlocked) {
       e.preventDefault();
     }
     dispatch(toggleIsDetailsOpen(false));
-    /* if (isDetailsOpen) {
-      console.log("Home yes")
-      dispatch(toggleIsDetailsOpen(false));
-      console.log(isDetailsOpen);*/
-    /*      setTimeout(() => {
-        navigate("/home");
-        searchParams.set("page", currentPage.toString());
-        setSearchParams(searchParams);
-        dispatch(setCardId(""));
-      }, 800);*/
-    //   }
   };
 
   return (
@@ -76,7 +75,8 @@ const Home: FC = () => {
           <Outlet />
           {!(isLoading || isFetching) && <Pagination />}
         </div>
-         <FooterPopup />
+        <FooterPopup />
+        {isSuccess && <SuccessDownloading />}
       </ErrorBoundary>
     </div>
   );

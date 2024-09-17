@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import s from "./FooterPopup.module.css";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import { clearSelection } from "../../state/CardList/CardsSlice.ts";
+import {clearSelection, setIsSuccess} from "../../state/CardList/CardsSlice.ts";
 import Papa from "papaparse";
 import card from "../Card/Card.tsx";
 const FooterPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
   const { selectedCards, cardList } = useAppSelector((state) => state.cardList);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     setTimeout(() => {
       if (selectedCards.length !== 0) {
@@ -56,6 +57,7 @@ const FooterPopup = () => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    dispatch(setIsSuccess(true));
   };
   return (
     <div className={`${s.popupContainer} ${isVisible ? s.visible : s.hidden}`}>

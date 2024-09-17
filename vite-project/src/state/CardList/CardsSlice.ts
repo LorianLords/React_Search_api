@@ -9,6 +9,7 @@ export interface CardsState {
   selectedCards: string[];
   loading: boolean;
   error: string | null;
+  isSuccess: boolean;
 }
 
 const initialState: CardsState = {
@@ -16,6 +17,7 @@ const initialState: CardsState = {
   selectedCards: [],
   loading: false,
   error: null,
+  isSuccess: false,
 };
 
 interface FetchProps {
@@ -60,6 +62,9 @@ const cardsSlice = createSlice({
         state.selectedCards.push(cardId);
       }
     },
+    setIsSuccess: (state, action: PayloadAction<boolean>) => {
+      state.isSuccess = action.payload;
+    },
     clearSelection: (state) => {
       state.selectedCards = [];
     },
@@ -82,5 +87,5 @@ const cardsSlice = createSlice({
   // },
 });
 
-export const { setLoading, setError, setCardList, toggleCard, clearSelection } = cardsSlice.actions;
+export const { setLoading, setError, setCardList, toggleCard, clearSelection, setIsSuccess } = cardsSlice.actions;
 export default cardsSlice.reducer;
