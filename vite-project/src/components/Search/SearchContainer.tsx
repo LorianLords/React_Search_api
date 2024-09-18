@@ -1,9 +1,11 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import styles from "./Search.module.css";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
 import { setCurrentPage } from "../../state/Pagination/PaginationSlice.ts";
 import { setSearch } from "../../state/Search/SearchSlice.ts";
+import themeContext from "../../services/ThemeContext.ts";
+import ThemeContext from "../../services/ThemeContext.ts";
 
 /*interface SearchContainerProps {
   //onSearch: (searchItem: string) => void;
@@ -16,7 +18,7 @@ const SearchContainer = () => {
   const { searchText } = useAppSelector((state) => state.search);
   const [searchParams, setSearchParams] = useSearchParams();
   const [inputText, setInput] = useState(searchText);
-
+  const { theme } = useContext(ThemeContext);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value);
   };
@@ -32,11 +34,11 @@ const SearchContainer = () => {
 
     dispatch(setCurrentPage(1));
     dispatch(setSearch(inputText.trim()));
-    localStorage.setItem("searchText", inputText.trim());
+    //localStorage.setItem("searchText", inputText.trim());
   };
 
   return (
-    <header className={styles.container}>
+    <header className={`${styles.container}  ${theme === 'light' ? styles.light : styles.dark}`}>
       <h1>Search Container</h1>
       <div>
         <input type="text" value={inputText} onChange={handleChange} />

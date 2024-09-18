@@ -1,9 +1,13 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 .card {
-  background-color: rgba(40, 38, 38, 0.77);
+  position: relative;
   display: flex;
   flex-direction: column;
-  color: white;
-  border: 4px solid darkcyan;
+
   margin: 20px;
   border-radius: 5px;
   padding: 20px;
@@ -15,7 +19,7 @@
 
 .card img {
   padding: 0;
-  margin: 0;
+  margin-top: 20px;
   max-width: 100%;
   max-height: 200px; /* Устанавливает максимальную высоту для изображения */
   width: auto; /* Сохраняет пропорции изображения */
@@ -32,6 +36,82 @@
   -webkit-line-clamp: 2; /* Количество строк до обрезки */
   -webkit-box-orient: vertical; /* Вертикальная ориентация */
 }
-.card:hover {
+.card.dark:hover {
   background-color: #c4b1b1;
 }
+
+.card.light:hover {
+  background-color: rgba(61, 173, 244, 0.77);
+}
+.card.light{
+  background-color: rgba(83, 153, 209, 0.77);
+  color: darkslategrey;
+  border: none;
+}
+.card.dark{
+  background-color: rgba(40, 38, 38, 0.77);
+  color: white;
+  border: 4px solid darkcyan;
+}
+
+/* Контейнер для чекбокса */
+.checkboxСontainer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+}
+
+/* Обёртка вокруг чекбокса с отступом 5px */
+.checkboxWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px; /* Отступ 5px вокруг чекбокса */
+  border-radius: 4px;
+  margin: 0;
+}
+
+.checkboxWrapper.dark{
+  background-color: #714896;
+}
+.checkboxWrapper.light{
+  background-color: #e0e0e0;
+}
+/* Стилизация самого чекбокса */
+.checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  border: 2px solid #007bff;
+}
+
+/* Убираем стандартный стиль чекбокса и добавляем кастомный */
+.checkbox {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 2px solid #007bff;
+  border-radius: 3px;
+}
+
+.checkbox:checked {
+  background-color: #007bff;
+  position: relative;
+}
+
+.checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+

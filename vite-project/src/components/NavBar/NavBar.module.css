@@ -1,11 +1,24 @@
 .navBar {
-  background-color: darkcyan;
+
   padding: 0.5rem;
   margin: 0;
-  border: none
+  border: none;
+  display: flex;
+  flex-direction: row;
+  font-family: Arial,sans-serif;
 }
+.navBar.light{
+  transition: background-color 0.7s ease;
+  background-color: #B3D1E8;
 
+}
+.navBar.dark{
+  background-color: #373737;
+  color: white;
+  transition: background-color 0.7s ease;
+}
 .navBar ul {
+
   list-style-type: none;
   margin: 0;
   padding: 0;
@@ -13,12 +26,22 @@
 }
 .navBar li {
   margin-right: 3rem;
+
 }
 
-a {
-  color: white;
+a{
   text-decoration: none;
+}
+.light a{
+  color: black;
+}
+.dark a{
+  color: white;
 }
 a:hover {
   text-decoration: underline;
+}
+
+h1{
+  margin: 0 0 0.5rem;
 }

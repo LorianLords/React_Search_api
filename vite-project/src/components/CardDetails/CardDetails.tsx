@@ -1,52 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../../views/Home.module.css";
 import stylesInfo from "./CardDetails.module.css";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import Loading from "../Loading.tsx";
-import {fetchDetails, setCardId} from "../../state/DetailsCard/DetailsSlice.tsx";
+import {
+  setCardId,
+  setIsBlocked,
+  toggleIsDetailsOpen,
+} from "../../state/DetailsCard/DetailsSlice.tsx";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks.ts";
-import {decrementCurPage} from "../../state/Pagination/PaginationSlice.ts";
+
+import { useGetCardDetailsQuery } from "../../state/DetailsCard/DetailsApi.ts";
+import ThemeContext from "../../services/ThemeContext.ts";
 
 const cardDetails: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const { cardId, detInfo, detLoading, error, isVisible, isDetailsOpen } =
-    useAppSelector((state) => state.details);
-  const { currentPage } = useAppSelector((state) => state.pagination);
-
-  //const { id } = useParams<{ id: string }>();
-  //const [details, setDetails] = useState<CardDetailProps>();
-  //const [loading, setLoading] = useState(true);
-  //const [isVisible, setVisible] = React.useState(false);
-
-  useEffect(() => {
-    if (cardId) {
-      dispatch(fetchDetails(cardId));
-    }
-  }, [cardId]);
-
+  const { cardId, isDetailsOpen } = useAppSelector((state) => state.details);
+  const {
+    data: detInfo,
+    isLoading,
+    isFetching,
+  } = useGetCardDetailsQuery({ cardId }, { skip: !cardId });
+  const { theme } = useContext(ThemeContext);
   const handleSideMenu = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 
   const handleBtnBack = () => {
-    const page = currentPage.toString();
-    navigate("/home");
-    searchParams.set("page", page);
-    setSearchParams(searchParams);
-    dispatch(setCardId(""));
+    dispatch(toggleIsDetailsOpen(false));
   };
+
   return (
     <div
-      className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open}`}
+      className={`${stylesInfo.sideDetails} ${isDetailsOpen && stylesInfo.open} `}
       onClick={handleSideMenu}
     >
-      {detLoading ? (
+      {isLoading || isFetching ? (
         <Loading />
       ) : (
-        <div className={stylesInfo.container}>
+        <div
+          className={`${stylesInfo.container} ${theme === "light" ? stylesInfo.light : stylesInfo.dark} `}
+        >
           <div className={stylesInfo.imageContainer}>
             <img
               src={`https://www.artic.edu/iiif/2/${detInfo?.image_id}/full/450,/0/default.jpg`}
