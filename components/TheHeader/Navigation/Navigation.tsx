@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import styles from './TheHeader.module.css';
+import styles from '../TheHeader.module.css';
 type NavLink = {
   label: string;
   href: string;

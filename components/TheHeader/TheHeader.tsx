@@ -1,6 +1,7 @@
 import styles from './TheHeader.module.css';
-import { Navigation } from '@/components/Navigation';
+import { Navigation } from '@/components/TheHeader/Navigation/Navigation';
 import React from 'react';
+import ThemeToggle from '@/components/TheHeader/ThemeToggle';
 
 export const links = [
   { label: 'Home', href: '/' },
@@ -9,13 +10,11 @@ export const links = [
 ];
 
 const TheHeader = () => {
-  const theme = 'light';
   return (
-    <header
-      className={`${styles.navBar} ${theme === 'light' ? styles.light : styles.dark}`}
-    >
+    <header className={styles.navBar}>
       <ul>
         <Navigation navLinks={links} />
+        <ThemeToggle />
       </ul>
     </header>
   );

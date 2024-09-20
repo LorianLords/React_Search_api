@@ -1,0 +1,23 @@
+.container {
+
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: -2px -2px 0 -2px;
+    border-bottom: black solid 1px;
+    transition: background-color 0.7s ease;
+    background-color: var( --search-color);
+}
+
+/*
+.container.light{
+    transition: background-color 0.7s ease;
+    background-color: #2A6F9E;
+}
+.container.dark{
+    transition: background-color 0.7s ease;
+    background-color: #1f242f;
+}
+*/

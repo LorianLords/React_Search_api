@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import { TheHeader } from '@/components/TheHeader';
+import { TheHeader } from '@/components/TheHeader/TheHeader';
 import React from 'react';
+import { ThemeProvider } from '@/services/ThemeContext';
+import StoreProvider from '@/services/StoreProvider';
+import Search from '@/components/Search/Search';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -25,11 +28,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const setInitialTheme = `
+    (function() {
+      function getInitialTheme() {
+        const savedTheme = window.localStorage.getItem('theme');
+        return savedTheme || 'light';
+      }
+      document.documentElement.setAttribute('data-theme', getInitialTheme());
+    })();
+  `;
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <TheHeader />
-        <main className={'container'}>{children}</main>
+        <script dangerouslySetInnerHTML={{ __html: setInitialTheme }} />
+        <StoreProvider>
+          <ThemeProvider>
+            <TheHeader />
+            <Search />
+            <main className={'container'}>{children}</main>
+          </ThemeProvider>
+        </StoreProvider>
       </body>
     </html>
   );
