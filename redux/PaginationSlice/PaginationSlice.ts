@@ -11,8 +11,11 @@ const initialPage = (): number => {
   // const router = useRouter();
   // const { page } = router.query;
   // return typeof page === 'string' ? parseInt(page, 10) : 1;
-  const params = new URLSearchParams(window.location.search);
-  return parseInt(params.get('page') || '1', 10);
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    return parseInt(params.get('page') || '1', 10);
+  }
+  return 1;
 };
 
 const initialState = {

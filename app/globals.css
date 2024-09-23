@@ -11,11 +11,18 @@
   --navbar-color: #373737;
   --background-image: url("../public/dark_wallper2.jpg");
   --search-color: #1f242f;
+  --background-card: rgba(40, 38, 38, 0.77);
+  --hover-card: #c4b1b1;
+  --border-card: 4px solid darkcyan;
 }
 
 [data-theme='light']{
   --navbar-color:  #B3D1E8;
   --search-color: #2A6F9E;
+
+  --background-card: rgba(83, 153, 209, 0.77);
+  --border-card: none;
+  --hover-card:  rgba(61, 173, 244, 0.77);
 }
 
 

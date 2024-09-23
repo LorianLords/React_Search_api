@@ -1,0 +1,22 @@
+.cardList {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 -8px;
+}
+
+.errButton{
+    padding: 8px;
+    border: none;
+    font-family: Inter, sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: rgba(205, 92, 92, 0.82);
+    border-radius: 5px;
+    margin: 0;
+    height: 40px;
+    position: absolute;
+
+    right: 10px;
+}

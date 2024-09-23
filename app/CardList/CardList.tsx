@@ -1,12 +1,14 @@
+'use client';
 import React, { useState } from 'react';
-import Card from '../Card/Card';
-import styles from './CardList.module.css';
-import Loading from '../Loading.tsx';
-import { useAppSelector, useAppDispatch } from '../../hooks/hooks.ts';
-import { CardProps } from '../../types/types.ts';
-import { useGetCardListQuery } from '../../state/Api/ApiSlice.ts';
+import Card from './Card/Card';
+import styles from './CarList.module.css';
+//import Loading.tsx from '../Loading.tsx.tsx';
+import { useAppSelector, useAppDispatch } from '@/services/hooks';
+import { CardProps } from '@/types/types';
+import { useGetCardListQuery } from '@/redux/Api/apiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
+import Loading from '@/components/Loading';
 
 const CardList = () => {
   const [handErr, setHandErr] = useState(false);
@@ -54,15 +56,17 @@ const CardList = () => {
         Error
       </button>
       {cardList.map((item: CardProps) => (
-        <Card
-          key={item.id}
-          id={item.id}
-          title={item.title}
-          date_display={item.date_display}
-          artist_display={item.artist_display}
-          image={item.image}
-          image_id={item.image_id}
-        />
+        <div key={item.id}>
+          <Card
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            date_display={item.date_display}
+            artist_display={item.artist_display}
+            image={item.image}
+            image_id={item.image_id}
+          />
+        </div>
       ))}
     </div>
   );

@@ -1,8 +1,12 @@
+'use client';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const initialSearch = (): string => {
-  const params = new URLSearchParams(window.location.search);
-  return params.get('search') || localStorage.getItem('searchText') || '';
+  if (typeof window !== 'undefined') {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('search') || localStorage.getItem('searchText') || '';
+  }
+  return ''; // Возвращаем пустую строку, если выполняется на сервере
 };
 
 export interface SearchState {
