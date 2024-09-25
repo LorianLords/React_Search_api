@@ -56,17 +56,15 @@ const CardList = () => {
         Error
       </button>
       {cardList.map((item: CardProps) => (
-        <div key={item.id}>
-          <Card
-            key={item.id}
-            id={item.id}
-            title={item.title}
-            date_display={item.date_display}
-            artist_display={item.artist_display}
-            image={item.image}
-            image_id={item.image_id}
-          />
-        </div>
+        <Card
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          date_display={item.date_display}
+          artist_display={item.artist_display}
+          image={item.image}
+          image_id={item.image_id}
+        />
       ))}
     </div>
   );

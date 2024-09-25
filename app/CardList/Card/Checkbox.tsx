@@ -17,7 +17,7 @@ const Checkbox = ({ id }: checkboxProps) => {
 
   return (
     <div
-      className={styles.checkboxСontainer}
+      className={styles.checkboxContainer}
       onClick={(e) => {
         e.stopPropagation();
       }}
