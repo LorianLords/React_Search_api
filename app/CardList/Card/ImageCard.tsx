@@ -9,17 +9,27 @@ interface imageProps {
 }
 const ImageCard = ({ image }: imageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-
+  const [imgSrc, setImgSrc] = useState(image || defaultImg);
   console.log(image);
   return (
     <div className={style.imageContainer}>
-      {!isLoaded && <Image src={placeholder} alt="placeholder" />}
+      {!isLoaded && (
+        <Image
+          className={style.cardImage}
+          src={placeholder}
+          alt="placeholder"
+          fill={true}
+        />
+      )}
       <Image
-        src={image || defaultImg}
+        src={imgSrc}
         className={style.cardImage}
         alt="picture"
         onLoad={() => setIsLoaded(true)}
-        onError={() => setIsLoaded(false)}
+        onError={() => {
+          setIsLoaded(false);
+          setImgSrc(defaultImg);
+        }}
         /*  style={{ display: isLoaded ? 'block' : 'none', objectFit: 'cover' }}*/
         fill={true}
         /* layout="fill" // Will size the image to fill the parent container

@@ -9,6 +9,7 @@ import { useGetCardListQuery } from '@/redux/Api/apiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import Loading from '@/components/Loading';
+import Pagination from '@/components/Pagination/Pagination';
 
 const CardList = () => {
   const [handErr, setHandErr] = useState(false);
