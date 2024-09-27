@@ -12,8 +12,8 @@ import { useAppDispatch, useAppSelector } from '@/services/hooks';*/
 /*import { logDOM } from '@testing-library/react';
 import { useTheme } from '@/services/ThemeContext';
 import { toggleCard } from '@/redux/CardListSlice/CardListSlice';*/
-import Checkbox from '@/app/CardList/Card/Checkbox';
-import ImageCard from '@/app/CardList/Card/ImageCard';
+import Checkbox from '@/app/CardListWrapper/CardList/Card/Checkbox';
+import ImageCard from '@/app/CardListWrapper/CardList/Card/ImageCard';
 
 const Card: FC<CardProps> = (props: CardProps) => {
   //const navigate = useNavigate();

@@ -1,34 +1,32 @@
 'use client';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import {
   decrementCurPage,
   incrementCurPage,
+  setCurrentPage,
 } from '@/redux/PaginationSlice/PaginationSlice';
 import styles from './Pagination.module.css';
-import { usePathname } from 'next/navigation';
 const Pagination = () => {
   //const [searchParams, setSearchParams] = useSearchParams();
-  /*
-  const router = useRouter();
-  const searchParams = new URLSearchParams(window.location.search);
+  const { replace } = useRouter();
   const pathname = usePathname();
-*/
-
+  //const searchParams = useSearchParams();
   const { totalPages, currentPage } = useAppSelector((state) => state.pagination);
+  const hasRun = useRef(false);
   const dispatch = useAppDispatch();
-  /*
-  searchParams.set('page', currentPage.toString());
-  router.push(pathname + '?' + searchParams.toString());
-*/
 
-  /*  useEffect(() => {
-    searchParams.set('page', currentPage.toString());
-    replace(`${pathname}?${searchParams.toString()}`);
-    //router.push(`?${searchParams.toString()}`);
-    console.log('useEff pagination');
-  }, [currentPage, searchParams]);*/
+  useEffect(() => {
+    if (!hasRun.current) {
+      hasRun.current = true;
+    } else {
+      const searchParams = new URLSearchParams(window.location.search);
+      searchParams.set('page', currentPage.toString());
+      replace(`${pathname}?${searchParams.toString()}`);
+      console.log('put', currentPage);
+    }
+  }, [currentPage]);
 
   const handlePrevious = () => {
     if (currentPage > 1) {

@@ -1,15 +1,16 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Card from './Card/Card';
 import styles from './CarList.module.css';
 //import Loading.tsx from '../Loading.tsx.tsx';
-import { useAppSelector, useAppDispatch } from '@/services/hooks';
+import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { CardProps } from '@/types/types';
 import { useGetCardListQuery } from '@/redux/Api/apiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import Loading from '@/components/Loading';
-import Pagination from '@/components/Pagination/Pagination';
+import { useSearchParams } from 'next/navigation';
+import { setCurrentPage } from '@/redux/PaginationSlice/PaginationSlice';
 
 const CardList = () => {
   const [handErr, setHandErr] = useState(false);
@@ -21,6 +22,21 @@ const CardList = () => {
   });
   const cardList = data?.cards;
 
+  const hasRun = useRef(false);
+  const searchParams = useSearchParams();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!hasRun.current) {
+      const page = parseInt(searchParams.get('page') || '1', 10);
+      console.log('GET', page);
+
+      if (page) {
+        dispatch(setCurrentPage(page));
+      }
+      hasRun.current = true;
+    }
+  }, []);
   const errorHandle = () => {
     console.log('Error button clicked');
     setHandErr(true);

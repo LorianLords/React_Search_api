@@ -28,6 +28,7 @@ export const apiSlice = createApi({
       { searchText: string | null; currentPage: number }
     >({
       query: ({ searchText, currentPage }) => {
+        console.log(currentPage);
         const url = searchText ? '/artworks/search' : '/artworks';
         return {
           url,

@@ -7,7 +7,7 @@ export interface PaginationState {
   pageSize: number;
 }
 
-const initialPage = (): number => {
+/*const initialPage = (): number => {
   // const router = useRouter();
   // const { page } = router.query;
   // return typeof page === 'string' ? parseInt(page, 10) : 1;
@@ -16,11 +16,11 @@ const initialPage = (): number => {
     return parseInt(params.get('page') || '1', 10);
   }
   return 1;
-};
+};*/
 
 const initialState = {
   totalPages: 1,
-  currentPage: initialPage(),
+  currentPage: 1,
   pageSize: 15,
 };
 

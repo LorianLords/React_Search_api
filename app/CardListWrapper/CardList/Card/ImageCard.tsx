@@ -32,6 +32,7 @@ const ImageCard = ({ image }: imageProps) => {
         }}
         /*  style={{ display: isLoaded ? 'block' : 'none', objectFit: 'cover' }}*/
         fill={true}
+        sizes={'(max-width: 500px) 100vw'}
         /* layout="fill" // Will size the image to fill the parent container
         objectFit="contain" // see - https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit
         objectPosition="center"*/

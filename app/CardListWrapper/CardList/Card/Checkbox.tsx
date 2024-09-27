@@ -1,5 +1,5 @@
 'use client';
-import styles from '@/app/CardList/Card/Card.module.css';
+import styles from '@/app/CardListWrapper/CardList/Card/Card.module.css';
 import React from 'react';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { toggleCard } from '@/redux/CardListSlice/CardListSlice';
