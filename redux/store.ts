@@ -1,15 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
 import searchReducer from './SearchSlice/SearchSlice';
 import paginationReducer from './PaginationSlice/PaginationSlice';
-import listenerMiddleware, { apiSlice } from '@/redux/Api/apiSlice';
-import cardsReducer from '@/redux/CardListSlice/CardListSlice';
+import listenerMiddleware, { apiSlice } from './Api/apiSlice';
+import cardsReducer from './CardListSlice/CardListSlice';
+import detailsReducer from './DetailsSlice/DetailsSlice';
 export const store = () => {
   return configureStore({
     reducer: {
       cardList: cardsReducer,
       pagination: paginationReducer,
       search: searchReducer,
-      //  details: detailsReducer,
+      details: detailsReducer,
       [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>

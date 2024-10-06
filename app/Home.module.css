@@ -1,6 +1,7 @@
 
 .content {
     flex: 1; /* Основное содержимое занимает оставшееся пространство */
+    position: relative;
     padding: 20px;
     display: flex;
     justify-content: center;

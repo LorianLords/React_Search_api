@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './Home.module.css';
 import Pagination from '@/components/Pagination/Pagination';
-import CardList from '@/app/CardListWrapper/CardList/CardList';
+import CardList from '@/app/CardList/CardList';
+import CardDetails from '@/components/CardDetails/CardDetails';
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
       <div id={'content-container'} className={`${styles.content} `}>
         <CardList />
         <Pagination />
+        <CardDetails />
       </div>
     </div>
   );

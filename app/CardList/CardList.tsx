@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import Card from './Card/Card';
+import Card from '@/app/CardList/Card/Card';
 import styles from './CarList.module.css';
 //import Loading.tsx from '../Loading.tsx.tsx';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
@@ -11,6 +11,9 @@ import { SerializedError } from '@reduxjs/toolkit';
 import Loading from '@/components/Loading';
 import { useSearchParams } from 'next/navigation';
 import { setCurrentPage } from '@/redux/PaginationSlice/PaginationSlice';
+import CardWrapper from '@/app/CardList/Card/CardWrapper';
+import { ErrorHandler } from '@/utils/ErrorHandler';
+import { toggleIsDetailsOpen } from '@/redux/DetailsSlice/DetailsSlice';
 
 const CardList = () => {
   const [handErr, setHandErr] = useState(false);
@@ -42,19 +45,12 @@ const CardList = () => {
     setHandErr(true);
   };
 
-  if (error) {
-    let errorMessage = 'Unknown error occurred';
-    if ('status' in error) {
-      // Это FetchBaseQueryError (ошибка от запроса)
-      const fetchError = error as FetchBaseQueryError;
-      errorMessage = `Error ${fetchError.status}: ${fetchError?.data || 'Unknown error'}`;
-    } else if ('message' in error) {
-      // Это SerializedError (общая ошибка)
-      const serializedError = error as SerializedError;
-      errorMessage = serializedError.message || 'Unknown serialized error';
-    }
+  const sidePanelHandler = () => {
+    dispatch(toggleIsDetailsOpen(false));
+  };
 
-    throw new Error(errorMessage);
+  if (error) {
+    ErrorHandler(error);
   }
   if (handErr) throw new Error('I crashed!');
   if (isLoading || isFetching) return <Loading />;
@@ -68,12 +64,13 @@ const CardList = () => {
   }
 
   return (
-    <div className={styles.cardList}>
+    <div className={styles.cardList} onClick={sidePanelHandler}>
       <button className={styles.errButton} onClick={errorHandle}>
         Error
       </button>
       {cardList.map((item: CardProps) => (
-        <Card
+        <CardWrapper item={item} key={item.id} />
+        /* <Card
           key={item.id}
           id={item.id}
           title={item.title}
@@ -81,7 +78,7 @@ const CardList = () => {
           artist_display={item.artist_display}
           image={item.image}
           image_id={item.image_id}
-        />
+        />*/
       ))}
     </div>
   );
