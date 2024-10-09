@@ -4,7 +4,13 @@
     justify-content: center;
     margin: 20px 0;
     font-family: Arial, sans-serif;
+    transition: margin-right 0.9s ease;
 }
+
+.openPanel{
+    margin-right: 450px;
+}
+
 .pagBtn{
     background-color:#002244;
     color: white;

@@ -9,31 +9,43 @@ import { useGetCardListQuery } from '@/redux/Api/apiSlice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 import Loading from '@/components/Loading';
-import { useSearchParams } from 'next/navigation';
+import { useParams, usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { setCurrentPage } from '@/redux/PaginationSlice/PaginationSlice';
 import CardWrapper from '@/app/CardList/Card/CardWrapper';
 import { ErrorHandler } from '@/utils/ErrorHandler';
 import { toggleIsDetailsOpen } from '@/redux/DetailsSlice/DetailsSlice';
+import { setSearch } from '@/redux/SearchSlice/SearchSlice';
 
 const CardList = () => {
   const [handErr, setHandErr] = useState(false);
   const { searchText } = useAppSelector((state) => state.search);
   const { currentPage } = useAppSelector((state) => state.pagination);
-  const { isLoading, error, isFetching, data } = useGetCardListQuery({
-    searchText,
-    currentPage,
-  });
-  const cardList = data?.cards;
-
+  const { isDetailsOpen } = useAppSelector((state) => state.details);
   const hasRun = useRef(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
+  const params = useParams();
+
+  console.log('CARDLIST');
+  console.log(searchText);
+  const { isLoading, error, isFetching, data } = useGetCardListQuery(
+    {
+      searchText,
+      currentPage,
+    },
+    { skip: typeof searchText === 'undefined' },
+  );
+  const cardList = data?.cards;
 
   useEffect(() => {
     if (!hasRun.current) {
       const page = parseInt(searchParams.get('page') || '1', 10);
       console.log('GET', page);
-
+      const search = params.search;
+      console.log(search);
+      console.log(typeof search);
+      console.log(search === '' ? '' : (search as string));
+      dispatch(setSearch(search === undefined ? '' : (search as string)));
       if (page) {
         dispatch(setCurrentPage(page));
       }
@@ -64,7 +76,10 @@ const CardList = () => {
   }
 
   return (
-    <div className={styles.cardList} onClick={sidePanelHandler}>
+    <div
+      className={`${styles.cardList} ${isDetailsOpen && styles.panelOpen}`}
+      onClick={sidePanelHandler}
+    >
       <button className={styles.errButton} onClick={errorHandle}>
         Error
       </button>

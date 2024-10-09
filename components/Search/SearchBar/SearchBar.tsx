@@ -8,7 +8,7 @@ import { setCurrentPage } from '@/redux/PaginationSlice/PaginationSlice';
 const SearchBar = () => {
   const dispatch = useAppDispatch();
   const { searchText } = useAppSelector((state) => state.search);
-  const [inputText, setInput] = useState(searchText);
+  const [inputText, setInput] = useState(searchText || '');
 
   const router = useRouter();
   const pathname = usePathname();
@@ -33,13 +33,12 @@ const SearchBar = () => {
   };
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(inputText);
     e.preventDefault();
     router.push(pathname + '?' + createQueryString('search', inputText.trim()));
-
-    dispatch(setCurrentPage(1));
     dispatch(setSearch(inputText.trim()));
-    localStorage.setItem('searchText', inputText.trim());
+    dispatch(setCurrentPage(1));
+
+    //if (inputText.trim() == '') localStorage.removeItem('searchText');
   };
 
   return (

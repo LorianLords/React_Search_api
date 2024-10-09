@@ -1,9 +1,11 @@
 .cardList {
+    flex: 1; /* Основное содержимое занимает оставшееся пространство */
     position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin: 0 -8px;
+    transition: margin-right 0.9s ease;
 }
 
 .errButton{
@@ -19,4 +21,8 @@
     position: absolute;
 
     right: 10px;
+}
+
+.panelOpen{
+    margin-right: 450px;
 }

@@ -9,8 +9,6 @@ import React from 'react';
 const CardDetails = () => {
   const dispatch = useAppDispatch();
   const { cardId, isDetailsOpen } = useAppSelector((state) => state.details);
-  console.log('isDetailsOpen', isDetailsOpen);
-  console.log('cardId', cardId);
   const {
     data: detInfo,
     isLoading,

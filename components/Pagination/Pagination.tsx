@@ -14,6 +14,7 @@ const Pagination = () => {
   const pathname = usePathname();
   //const searchParams = useSearchParams();
   const { totalPages, currentPage } = useAppSelector((state) => state.pagination);
+  const { isDetailsOpen } = useAppSelector((state) => state.details);
   const hasRun = useRef(false);
   const dispatch = useAppDispatch();
 
@@ -41,7 +42,7 @@ const Pagination = () => {
   };
 
   return (
-    <div className={styles.pagination}>
+    <div className={`${styles.pagination} ${isDetailsOpen && styles.openPanel}`}>
       <button className={styles.pagBtn} onClick={handlePrevious}>
         Previous
       </button>

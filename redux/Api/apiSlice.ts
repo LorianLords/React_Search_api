@@ -1,23 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import { ApiResponse, CardProps, DataApi } from '@/types/types';
-import { createListenerMiddleware } from '@reduxjs/toolkit';
-import { setSearch } from '../SearchSlice/SearchSlice';
 import removeDuplicates from '../../utils/RemoveDuplicates';
 import { fetchImg } from '@/utils/apiService';
 import { setTotalPages } from '../PaginationSlice/PaginationSlice';
 import { setCardList } from '../CardListSlice/CardListSlice';
-
-const listenerMiddleware = createListenerMiddleware();
-
-listenerMiddleware.startListening({
-  actionCreator: setSearch,
-  effect: (action) => {
-    const searchText = action.payload;
-    localStorage.setItem('searchText', searchText);
-    console.log('Данные search сохранены в localStorage');
-  },
-});
 
 export const apiSlice = createApi({
   reducerPath: 'api',
@@ -25,7 +12,7 @@ export const apiSlice = createApi({
   endpoints: (builder) => ({
     getCardList: builder.query<
       DataApi,
-      { searchText: string | null; currentPage: number }
+      { searchText: string | undefined; currentPage: number }
     >({
       query: ({ searchText, currentPage }) => {
         console.log(currentPage);
@@ -62,4 +49,3 @@ export const apiSlice = createApi({
 });
 
 export const { useGetCardListQuery } = apiSlice;
-export default listenerMiddleware;

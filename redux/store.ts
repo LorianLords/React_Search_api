@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
 import searchReducer from './SearchSlice/SearchSlice';
 import paginationReducer from './PaginationSlice/PaginationSlice';
-import listenerMiddleware, { apiSlice } from './Api/apiSlice';
+import { apiSlice } from './Api/apiSlice';
 import cardsReducer from './CardListSlice/CardListSlice';
 import detailsReducer from './DetailsSlice/DetailsSlice';
+import listenerMiddleware from '@/utils/listenerMiddleware';
 export const store = () => {
   return configureStore({
     reducer: {

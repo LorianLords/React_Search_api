@@ -1,28 +1,29 @@
 'use client';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createListenerMiddleware, createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const initialSearch = (): string => {
+/*const initialSearch = (): string => {
   if (typeof window !== 'undefined') {
     const params = new URLSearchParams(window.location.search);
     return params.get('search') || localStorage.getItem('searchText') || '';
   }
   return ''; // Возвращаем пустую строку, если выполняется на сервере
-};
+};*/
 
 export interface SearchState {
-  searchText: string;
+  searchText: string | undefined;
 }
 
 const initialState: SearchState = {
-  searchText: initialSearch(),
+  searchText: undefined,
 };
 
 const SearchSlice = createSlice({
   name: 'Search',
   initialState,
   reducers: {
-    setSearch: (state, action: PayloadAction<string>) => {
+    setSearch: (state, action: PayloadAction<string | undefined>) => {
       state.searchText = action.payload;
+      //state.searchText = action.payload === '' ? null : action.payload;
     },
   },
 });

@@ -11,18 +11,11 @@
     opacity: 1;
 }
 
-[data-theme='light'].container{
-    background-color: rgba(83, 153, 209, 0.77);
-    color: black;
+
+.container{
+    background-color: var( --panel-color);
+
 }
-[data-theme='dark'].container{
-    background-color: rgba(104, 121, 104, 0.85);
-    color: white;
-}
-/*.container.dark{
-    background-color: rgba(104, 121, 104, 0.85);
-    color: white;
-}*/
 /*
 .container.light{
     background-color: rgba(83, 153, 209, 0.77);

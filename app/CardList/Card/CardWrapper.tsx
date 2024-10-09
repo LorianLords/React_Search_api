@@ -16,7 +16,6 @@ const CardWrapper = ({ item }: CardWrapperProps) => {
 
   const handleSidePanel = (e: React.MouseEvent<HTMLDivElement>) => {
     dispatch(toggleIsDetailsOpen(true));
-    console.log('open');
     dispatch(setCardId(item.id));
     e.stopPropagation();
   };
