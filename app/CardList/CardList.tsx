@@ -24,7 +24,7 @@ const CardList = () => {
   const hasRun = useRef(false);
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
-  const params = useParams();
+  const params = useSearchParams();
 
   console.log('CARDLIST');
   console.log(searchText);
@@ -41,11 +41,11 @@ const CardList = () => {
     if (!hasRun.current) {
       const page = parseInt(searchParams.get('page') || '1', 10);
       console.log('GET', page);
-      const search = params.search;
+      const search = params.get('search');
       console.log(search);
       console.log(typeof search);
       console.log(search === '' ? '' : (search as string));
-      dispatch(setSearch(search === undefined ? '' : (search as string)));
+      dispatch(setSearch(search === null ? '' : (search as string)));
       if (page) {
         dispatch(setCurrentPage(page));
       }

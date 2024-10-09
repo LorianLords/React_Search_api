@@ -1,5 +1,5 @@
 'use client';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/services/hooks';
 import { setSearch } from '@/redux/SearchSlice/SearchSlice';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -8,11 +8,15 @@ import { setCurrentPage } from '@/redux/PaginationSlice/PaginationSlice';
 const SearchBar = () => {
   const dispatch = useAppDispatch();
   const { searchText } = useAppSelector((state) => state.search);
-  const [inputText, setInput] = useState(searchText || '');
+  const [inputText, setInput] = useState('');
 
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setInput(searchText || '');
+  }, [searchText]);
 
   const createQueryString = useCallback(
     (name: string, value: string) => {
@@ -34,7 +38,9 @@ const SearchBar = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    router.push(pathname + '?' + createQueryString('search', inputText.trim()));
+    router.push(
+      pathname + '?' + createQueryString('search', inputText.trim().replace(/\s+/g, '_')),
+    );
     dispatch(setSearch(inputText.trim()));
     dispatch(setCurrentPage(1));
 
